@@ -2,61 +2,66 @@
 
 Mobile-first 2D action roguelite built with Godot 4.7.2.
 
-## Product pillars
+## Current playable loop
 
-- Short, replayable dungeon runs built from handcrafted rooms assembled procedurally.
-- Distinct enemy families: dinosaurs, alien creatures, carnivorous plants, skeletons and insects.
-- Bosses remain damageable. Difficulty comes from patterns, arena interactions and enemy composition, not forced invulnerability.
-- Interactive boss arenas support levers, scripted breakable set pieces and charge interactions.
-- Dimensional boss mechanics temporarily move the player to another arena, then restore the original boss instance with its HP and phase preserved.
-- Offline-first core. No backend required.
-- Native Godot mobile controls and Play Store AAB configuration.
-- Data-driven content so new enemies and encounters can be added without rewriting the core.
+A new game creates or resumes a deterministic dungeon run.
 
-## Current playable engineering run
+- Connected procedural room graph with main route and side branches.
+- Guaranteed treasure and event decisions every run.
+- Five enemy families with distinct combat behavior.
+- T-Rex miniboss with lever-controlled breakable set pieces.
+- Rift Warden final boss with temporary dimensional combat arenas.
+- Bosses remain damageable through phase changes.
+- Five mechanically distinct weapons.
+- Six build-changing run modifiers.
+- Deterministic treasure/event choices.
+- Essence rewards and permanent weapon unlocks.
+- Local profile progression.
+- Safe checkpoint autosave and automatic run resume.
+- Native Godot mobile controls, auto-aim assistance and retry flow.
+- Android Play AAB preset targeting API 36.
 
-The startup scene creates a deterministic dungeon from a seed.
+## Weapons
 
-- Main path uses east/west doors with north/south side branches.
-- Combat doors stay locked until the room is cleared.
-- Cleared rooms remain cleared when backtracking.
-- Early encounters introduce skeletons, armored insects and raptors.
-- Grabbing plants join from depth 2.
-- Teleporting ranged aliens join from depth 4.
-- Mobile/desktop attack uses optional nearest-target aim assist, with last movement direction as fallback.
-- The T-Rex is a miniboss with vulnerable phases, telegraphed charges and two optional lever/set-piece interactions.
-- T-Rex breakable set pieces are real collision geometry for both the player and boss until they are destroyed.
-- The Rift Warden is the final boss. Phase transitions can cast the player into themed pocket arenas; clearing them returns to the same boss instance.
-- Player defeat ends the run; the room freezes and RETRY restarts cleanly.
-- No boss framework grants generic invulnerability.
+- Rift Sidearm — baseline precision.
+- Raptor Scatter — close-range spread.
+- Bone Rail — piercing high-speed shot.
+- Spore Repeater — burst weapon.
+- Beetle Core — explosive area weapon.
 
-All visuals are still intentional programmer art. PixelLab assets should replace placeholders only after the gameplay contracts are stable.
+## Run modifiers
+
+Predator Sigil, Mycelial Heart, Alien Lens, Beetle Carapace, Chrono Tendon and Void Capacitor can combine with any weapon.
 
 ## Desktop controls
 
 - Arrow keys: move
-- Space or Enter: attack
+- Space / Enter: attack
 - Shift: dash
-- E: interact with levers
+- E: interact
 - R: restart after victory/defeat
 
-On touch devices, the project uses Godot 4.7's native virtual joystick plus touch attack/dash/interact buttons and a contextual RETRY control.
+Touch devices use Godot's native virtual joystick plus attack, dash, interact and contextual retry buttons.
+
+## Persistence
+
+Two local files are intentionally separate:
+
+- permanent profile progression;
+- current run checkpoint.
+
+Closing the game mid-run restores the last safe room checkpoint. Victory or defeat clears only the active run.
+
+No backend is required for the core game.
 
 ## Validation
 
-CI imports the project in Godot 4.7.2 and runs deterministic tests. The suite currently validates:
+CI imports the project with Godot 4.7.2, runs deterministic suites and headless smoke boots.
 
-- hundreds of dungeon seeds;
-- thousands of encounter budget/seed combinations;
-- reciprocal doors and reachability;
-- boss phase thresholds;
-- RNG stream separation;
-- critical scenes, InputMap actions and collision-layer contracts.
+Current automated coverage includes procedural topology, encounter budgets, hundreds of dungeon seeds, thousands of encounter combinations, build/reward determinism, progression thresholds, scene contracts and boss prototypes.
 
-## Build
+## Documentation
 
-The versioned **Android Play AAB** export preset targets API 36. Signing credentials and keystores are intentionally excluded from Git.
+See docs/ARCHITECTURE.md, docs/ART_DIRECTION.md, docs/ANDROID_BUILD.md, docs/ITERATION_01.md, docs/ITERATION_02.md and docs/THIRD_PARTY.md.
 
-## Development rule
-
-Every system is integrated in small, testable gates. External dependencies are added only when they remove more complexity than they introduce.
+Final art, audio, settings/accessibility, expanded content and monetization are intentionally separate future gates.

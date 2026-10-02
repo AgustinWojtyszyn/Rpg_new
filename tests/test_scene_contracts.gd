@@ -113,6 +113,7 @@ func _validate_run_scene_contracts(failures: Array[String]) -> void:
 			"UI/BossHealth",
 			"UI/Build",
 			"UI/Profile",
+			"UI/Toast",
 			"UI/GameOver",
 			"UI/Victory",
 			"MobileControls",

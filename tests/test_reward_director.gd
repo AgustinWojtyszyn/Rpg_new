@@ -32,6 +32,17 @@ func run() -> Array[String]:
 	if maxed_options.size() != 3:
 		failures.append("Treasure rooms must still provide three choices for a maxed build.")
 
+	var base_ids := MetaProgression.new().get_unlocked_weapon_ids()
+	var locked_rng := RandomNumberGenerator.new()
+	locked_rng.seed = 112
+	var locked_options := director.build_treasure_options(RunBuild.new(), locked_rng, base_ids, 3)
+	for option in locked_options:
+		if StringName(option.get("kind", &"")) == &"weapon":
+			var weapon_id := StringName(option.get("id", &""))
+			if not base_ids.has(weapon_id):
+				failures.append("Treasure director offered a locked weapon: %s" % String(weapon_id))
+				break
+
 	build.add_modifier(RunModifierCatalog.get_by_id(&"predator_sigil"))
 	var event_rng := RandomNumberGenerator.new()
 	event_rng.seed = 1

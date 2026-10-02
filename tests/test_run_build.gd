@@ -11,6 +11,7 @@ func run() -> Array[String]:
 		failures.append("Iteration 2 requires at least six run modifiers.")
 
 	_validate_weapon_ids(weapons, failures)
+	_validate_weapon_mechanics(weapons, failures)
 	_validate_modifier_ids(modifiers, failures)
 	_validate_build_math(failures)
 	_validate_serialization(failures)
@@ -29,6 +30,21 @@ func _validate_weapon_ids(weapons: Array[WeaponDefinition], failures: Array[Stri
 		if definition.damage <= 0.0 or definition.fire_cooldown <= 0.0:
 			failures.append("Weapon %s has invalid combat values." % String(definition.id))
 			return
+
+func _validate_weapon_mechanics(weapons: Array[WeaponDefinition], failures: Array[String]) -> void:
+	var signatures: Dictionary = {}
+	for definition in weapons:
+		var signature := "%d|%.1f|%d|%d|%.1f" % [
+			definition.projectile_count,
+			definition.spread_degrees,
+			definition.burst_count,
+			definition.pierce_count,
+			definition.explosion_radius,
+		]
+		if signatures.has(signature):
+			failures.append("Weapons must not collapse into identical mechanic signatures: %s" % signature)
+			return
+		signatures[signature] = true
 
 func _validate_modifier_ids(modifiers: Array[RunModifierDefinition], failures: Array[String]) -> void:
 	var ids: Dictionary = {}
