@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RunModifierDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/run_modifier_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"predator_sigil"
+display_name = "Predator Sigil"
+description = "+24% daño. La build se vuelve más agresiva."
+damage_bonus = 0.24
+reward_weight = 1.0

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WeaponDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/weapon_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"raptor_scatter"
+display_name = "Raptor Scatter"
+description = "Cinco fragmentos en abanico. Brutal de cerca."
+damage = 6.5
+fire_cooldown = 0.62
+projectile_speed = 520.0
+projectile_lifetime = 0.72
+projectile_count = 5
+spread_degrees = 34.0
+burst_count = 1
+pierce_count = 0
+explosion_radius = 0.0
+projectile_radius = 3.8
+reward_weight = 0.95
+projectile_color = Color(0.54, 1, 0.36, 1)

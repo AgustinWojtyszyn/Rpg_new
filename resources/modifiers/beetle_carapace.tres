@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="RunModifierDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/run_modifier_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"beetle_carapace"
+display_name = "Beetle Carapace"
+description = "+16% vida y más tiempo de gracia tras recibir daño."
+max_health_bonus = 0.16
+hurt_invulnerability_bonus = 0.14
+reward_weight = 0.88

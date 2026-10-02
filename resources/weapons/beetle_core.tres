@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WeaponDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/weapon_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"beetle_core"
+display_name = "Beetle Core"
+description = "Orbe pesado que explota al impactar y limpia grupos."
+damage = 22.0
+fire_cooldown = 0.92
+projectile_speed = 330.0
+projectile_lifetime = 1.75
+projectile_count = 1
+spread_degrees = 0.0
+burst_count = 1
+pierce_count = 0
+explosion_radius = 72.0
+projectile_radius = 8.0
+reward_weight = 0.72
+projectile_color = Color(1, 0.46, 0.14, 1)

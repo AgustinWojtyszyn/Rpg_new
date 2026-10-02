@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RunModifierDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/run_modifier_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"chrono_tendon"
+display_name = "Chrono Tendon"
+description = "+18% cadencia, +12% movimiento y dash más frecuente."
+fire_rate_bonus = 0.18
+move_speed_bonus = 0.12
+dash_recharge_bonus = 0.20
+reward_weight = 0.92

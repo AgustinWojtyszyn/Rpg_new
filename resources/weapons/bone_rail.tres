@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WeaponDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/weapon_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"bone_rail"
+display_name = "Bone Rail"
+description = "Lanza una aguja ósea supersónica que atraviesa enemigos."
+damage = 31.0
+fire_cooldown = 0.86
+projectile_speed = 980.0
+projectile_lifetime = 1.05
+projectile_count = 1
+spread_degrees = 0.0
+burst_count = 1
+pierce_count = 2
+explosion_radius = 0.0
+projectile_radius = 3.2
+reward_weight = 0.80
+projectile_color = Color(1, 0.93, 0.72, 1)

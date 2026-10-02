@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="WeaponDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/weapon_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"spore_repeater"
+display_name = "Spore Repeater"
+description = "Ráfaga de tres semillas tóxicas. Castiga ventanas cortas."
+damage = 9.0
+fire_cooldown = 0.58
+projectile_speed = 470.0
+projectile_lifetime = 1.55
+projectile_count = 1
+spread_degrees = 4.0
+burst_count = 3
+burst_interval = 0.095
+pierce_count = 0
+explosion_radius = 0.0
+projectile_radius = 5.2
+reward_weight = 0.90
+projectile_color = Color(0.64, 1, 0.28, 1)

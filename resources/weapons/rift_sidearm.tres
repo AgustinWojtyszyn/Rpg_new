@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WeaponDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/weapon_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"rift_sidearm"
+display_name = "Rift Sidearm"
+description = "Precisa y estable. Disparo rápido de energía dimensional."
+damage = 13.0
+fire_cooldown = 0.26
+projectile_speed = 610.0
+projectile_lifetime = 1.35
+projectile_count = 1
+spread_degrees = 0.0
+burst_count = 1
+pierce_count = 0
+explosion_radius = 0.0
+projectile_radius = 4.5
+reward_weight = 1.1
+projectile_color = Color(0.30, 0.88, 1, 1)

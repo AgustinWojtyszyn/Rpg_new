@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="RunModifierDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/run_modifier_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"alien_lens"
+display_name = "Alien Lens"
+description = "+1 proyectil por salva y +12% velocidad de proyectil."
+projectile_speed_bonus = 0.12
+projectile_count_bonus = 1
+reward_weight = 0.72
