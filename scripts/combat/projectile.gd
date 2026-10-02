@@ -25,7 +25,10 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 
 func _on_body_entered(body: Node) -> void:
-	if body.has_method("receive_hit"):
+	if body.has_method("receive_projectile_hit"):
+		body.call("receive_projectile_hit", damage, global_position)
+		queue_free()
+	elif body.has_method("receive_hit"):
 		body.call("receive_hit", damage)
 		queue_free()
 

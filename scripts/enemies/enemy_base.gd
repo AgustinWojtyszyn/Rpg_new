@@ -71,6 +71,9 @@ func _clamp_to_arena() -> void:
 func receive_hit(amount: float) -> void:
 	health.apply_damage(amount)
 
+func receive_projectile_hit(amount: float, _source_position: Vector2) -> void:
+	receive_hit(amount)
+
 func _on_died() -> void:
 	queue_free()
 
