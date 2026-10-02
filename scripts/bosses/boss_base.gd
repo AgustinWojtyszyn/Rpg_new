@@ -13,6 +13,7 @@ var target: Node2D
 var phase_model: BossPhaseModel
 
 func _ready() -> void:
+	add_to_group("aim_targets")
 	phase_model = BossPhaseModel.new(phase_thresholds)
 	health.configure(max_health)
 	health.damaged.connect(_on_damaged)

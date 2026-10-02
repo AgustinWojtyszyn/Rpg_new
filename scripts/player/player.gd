@@ -7,6 +7,8 @@ signal interact_requested
 @export_range(10.0, 1500.0, 1.0) var dash_speed: float = 560.0
 @export_range(0.05, 1.0, 0.01) var dash_duration: float = 0.14
 @export_range(0.1, 5.0, 0.05) var dash_cooldown: float = 0.85
+@export var aim_assist_enabled: bool = true
+@export_range(50.0, 1000.0, 10.0) var aim_assist_range: float = 460.0
 @export var projectile_scene: PackedScene
 
 @onready var health: HealthComponent = $Health
@@ -64,12 +66,44 @@ func is_dashing() -> bool:
 func _fire() -> void:
 	if projectile_scene == null:
 		return
+
+	var attack_direction := _get_attack_direction()
+	last_aim_direction = attack_direction
+
 	var projectile := projectile_scene.instantiate() as Projectile
 	if projectile == null:
 		return
 	get_tree().current_scene.add_child(projectile)
-	projectile.global_position = global_position + last_aim_direction * 20.0
-	projectile.launch(last_aim_direction)
+	projectile.global_position = global_position + attack_direction * 20.0
+	projectile.launch(attack_direction)
+
+func _get_attack_direction() -> Vector2:
+	if not aim_assist_enabled:
+		return last_aim_direction
+
+	var closest_distance_sq := aim_assist_range * aim_assist_range
+	var closest_target: Node2D
+
+	for candidate in get_tree().get_nodes_in_group("aim_targets"):
+		if candidate is not Node2D:
+			continue
+		var target_node := candidate as Node2D
+		if not is_instance_valid(target_node) or target_node.is_queued_for_deletion():
+			continue
+		if target_node is CanvasItem and not (target_node as CanvasItem).is_visible_in_tree():
+			continue
+
+		var distance_sq := global_position.distance_squared_to(target_node.global_position)
+		if distance_sq < closest_distance_sq:
+			closest_distance_sq = distance_sq
+			closest_target = target_node
+
+	if closest_target != null:
+		var assisted := (closest_target.global_position - global_position).normalized()
+		if assisted != Vector2.ZERO:
+			return assisted
+
+	return last_aim_direction
 
 func receive_hit(amount: float) -> void:
 	health.apply_damage(amount)

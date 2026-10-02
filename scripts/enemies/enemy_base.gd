@@ -10,6 +10,7 @@ var target: Node2D
 var _contact_cooldown := 0.0
 
 func _ready() -> void:
+	add_to_group("aim_targets")
 	if definition != null:
 		health.configure(definition.max_health)
 	health.died.connect(_on_died)
