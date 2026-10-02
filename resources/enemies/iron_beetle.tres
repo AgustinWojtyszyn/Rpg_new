@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"iron_beetle"
+display_name = "Iron Beetle"
+family = 4
+role = 3
+max_health = 95.0
+move_speed = 70.0
+contact_damage = 17.0
+preferred_range = 50.0
+encounter_cost = 5
+placeholder_color = Color(0.95, 0.50, 0.18, 1)

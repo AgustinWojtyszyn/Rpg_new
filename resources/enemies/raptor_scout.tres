@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"raptor_scout"
+display_name = "Raptor Scout"
+family = 0
+role = 0
+max_health = 34.0
+move_speed = 170.0
+contact_damage = 9.0
+preferred_range = 60.0
+encounter_cost = 3
+placeholder_color = Color(0.36, 0.88, 0.42, 1)

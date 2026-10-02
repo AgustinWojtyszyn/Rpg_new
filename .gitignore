@@ -1,0 +1,22 @@
+# Godot generated files
+.godot/
+.import/
+export.cfg
+export_presets.cfg
+
+# Builds
+build/
+dist/
+*.apk
+*.aab
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Signing material
+*.keystore
+*.jks
+*.p12
