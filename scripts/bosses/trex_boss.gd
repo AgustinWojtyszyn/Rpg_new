@@ -15,6 +15,7 @@ enum State {
 @export_range(0.1, 3.0, 0.05) var recovery_time: float = 0.55
 @export_range(0.1, 5.0, 0.05) var stun_time: float = 1.35
 @export_range(0.1, 100.0, 1.0) var charge_damage: float = 24.0
+@export_range(0.1, 5.0, 0.05) var contact_interval: float = 0.70
 
 var state: State = State.STALK
 var _state_time_left := 0.0
@@ -25,6 +26,7 @@ var _charge_setpiece: BreakableSetPiece
 var _special_charge_pending := false
 var _hit_player_this_charge := false
 var _facing := Vector2.DOWN
+var _body_contact_left := 0.0
 
 func _ready() -> void:
 	super()
@@ -34,6 +36,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	_charge_cooldown_left = maxf(0.0, _charge_cooldown_left - delta)
 	_state_time_left = maxf(0.0, _state_time_left - delta)
+	_body_contact_left = maxf(0.0, _body_contact_left - delta)
 
 	if not is_instance_valid(target):
 		velocity = Vector2.ZERO
@@ -116,10 +119,13 @@ func _handle_charge_collisions() -> bool:
 	return false
 
 func _damage_player_from_contacts(amount: float) -> void:
+	if _body_contact_left > 0.0:
+		return
 	for index in range(get_slide_collision_count()):
 		var collider := get_slide_collision(index).get_collider()
 		if collider is PlayerCharacter:
 			(collider as PlayerCharacter).receive_hit(amount)
+			_body_contact_left = contact_interval
 			return
 
 func _find_armed_setpiece() -> BreakableSetPiece:
