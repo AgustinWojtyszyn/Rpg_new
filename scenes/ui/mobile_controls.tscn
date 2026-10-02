@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/mobile_controls.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/ui/mobile_action_button.gd" id="2"]
@@ -49,6 +49,9 @@ radius = 34.0
 
 [sub_resource type="CircleShape2D" id="CircleShape_interact"]
 radius = 31.0
+
+[sub_resource type="CircleShape2D" id="CircleShape_restart"]
+radius = 52.0
 
 [node name="MobileControls" type="CanvasLayer"]
 layer = 20
@@ -114,3 +117,15 @@ script = ExtResource("2")
 label_text = "USE"
 radius = 31.0
 accent_color = Color(0.42, 1, 0.52, 0.95)
+
+[node name="Restart" type="TouchScreenButton" parent="Root"]
+visible = false
+position = Vector2(480, 370)
+visibility_mode = 1
+action = "restart_run"
+shape = SubResource("CircleShape_restart")
+shape_visible = false
+script = ExtResource("2")
+label_text = "RETRY"
+radius = 52.0
+accent_color = Color(0.42, 1, 0.64, 0.98)

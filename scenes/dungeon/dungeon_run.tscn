@@ -28,13 +28,24 @@ theme_override_font_sizes/font_size = 18
 
 [node name="Victory" type="Label" parent="UI"]
 visible = false
-offset_left = 260.0
-offset_top = 220.0
-offset_right = 700.0
-offset_bottom = 320.0
-text = "RIFT WARDEN DERROTADO\nRUN COMPLETADA"
+offset_left = 235.0
+offset_top = 205.0
+offset_right = 725.0
+offset_bottom = 315.0
+text = "RIFT WARDEN DERROTADO\nRUN COMPLETADA\nR / RETRY para jugar otra vez"
 horizontal_alignment = 1
 theme_override_colors/font_color = Color(0.65, 1, 0.78, 1)
+theme_override_font_sizes/font_size = 28
+
+[node name="GameOver" type="Label" parent="UI"]
+visible = false
+offset_left = 260.0
+offset_top = 205.0
+offset_right = 700.0
+offset_bottom = 315.0
+text = "RUN TERMINADA\nR / RETRY para reintentar"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 0.50, 0.42, 1)
 theme_override_font_sizes/font_size = 28
 
 [node name="MobileControls" parent="." instance=ExtResource("3")]

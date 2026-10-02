@@ -2,6 +2,7 @@ class_name PlayerCharacter
 extends CharacterBody2D
 
 signal interact_requested
+signal defeated
 
 @export_range(10.0, 1000.0, 1.0) var move_speed: float = 220.0
 @export_range(10.0, 1500.0, 1.0) var dash_speed: float = 560.0
@@ -18,12 +19,17 @@ var _external_velocity := Vector2.ZERO
 var _dash_direction := Vector2.RIGHT
 var _dash_time_left := 0.0
 var _dash_cooldown_left := 0.0
+var _defeated := false
 
 func _ready() -> void:
 	health.died.connect(_on_died)
 	queue_redraw()
 
 func _physics_process(delta: float) -> void:
+	if _defeated:
+		velocity = Vector2.ZERO
+		return
+
 	_dash_cooldown_left = maxf(0.0, _dash_cooldown_left - delta)
 	_dash_time_left = maxf(0.0, _dash_time_left - delta)
 
@@ -55,16 +61,31 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 
 func apply_pull(source_position: Vector2, strength: float) -> void:
+	if _defeated:
+		return
 	var pull_direction := (source_position - global_position).normalized()
 	_external_velocity += pull_direction * maxf(0.0, strength)
 	if _external_velocity.length() > 260.0:
 		_external_velocity = _external_velocity.normalized() * 260.0
 
 func is_dashing() -> bool:
-	return _dash_time_left > 0.0
+	return not _defeated and _dash_time_left > 0.0
+
+func is_defeated() -> bool:
+	return _defeated
+
+func revive(at_position: Vector2) -> void:
+	global_position = at_position
+	_external_velocity = Vector2.ZERO
+	_dash_time_left = 0.0
+	_dash_cooldown_left = 0.0
+	_defeated = false
+	health.reset()
+	set_physics_process(true)
+	queue_redraw()
 
 func _fire() -> void:
-	if projectile_scene == null:
+	if _defeated or projectile_scene == null:
 		return
 
 	var attack_direction := _get_attack_direction()
@@ -106,15 +127,24 @@ func _get_attack_direction() -> Vector2:
 	return last_aim_direction
 
 func receive_hit(amount: float) -> void:
+	if _defeated:
+		return
 	health.apply_damage(amount)
 
 func _on_died() -> void:
-	global_position = Vector2(480.0, 270.0)
+	if _defeated:
+		return
+	_defeated = true
+	velocity = Vector2.ZERO
 	_external_velocity = Vector2.ZERO
-	health.reset()
+	set_physics_process(false)
+	defeated.emit()
+	queue_redraw()
 
 func _draw() -> void:
-	var outer := Color(0.55, 0.92, 1.0) if is_dashing() else Color(0.35, 0.78, 1.0)
+	var outer := Color(0.38, 0.40, 0.45) if _defeated else Color(0.35, 0.78, 1.0)
+	if is_dashing():
+		outer = Color(0.55, 0.92, 1.0)
 	draw_circle(Vector2.ZERO, 13.0, outer)
 	draw_circle(Vector2.ZERO, 8.0, Color(0.10, 0.18, 0.28))
 	draw_line(Vector2.ZERO, last_aim_direction * 18.0, Color.WHITE, 3.0)

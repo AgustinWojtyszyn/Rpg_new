@@ -25,6 +25,8 @@ const OPPOSITE_SLOT := {
 @onready var player: PlayerCharacter = $PlayerLayer/Player
 @onready var status_label: Label = $UI/Status
 @onready var victory_label: Label = $UI/Victory
+@onready var game_over_label: Label = $UI/GameOver
+@onready var mobile_controls: MobileControls = $MobileControls
 
 var _layout: Dictionary
 var _current_room: RoomBase
@@ -32,14 +34,31 @@ var _current_room_id := -1
 var _cleared_rooms: Dictionary = {}
 var _transitioning := false
 var _victory := false
+var _game_over := false
 
 func _ready() -> void:
+	player.defeated.connect(_on_player_defeated)
 	_layout = RoomGraphGenerator.new().generate(run_seed, main_path_rooms, side_rooms)
 	_enter_room(int(_layout["start_id"]), &"")
 
 func _process(_delta: float) -> void:
+	if _game_over:
+		game_over_label.visible = true
+		victory_label.visible = false
+		if Input.is_action_just_pressed("restart_run"):
+			get_tree().reload_current_scene()
+		return
+
+	if _victory:
+		victory_label.visible = true
+		game_over_label.visible = false
+		if Input.is_action_just_pressed("restart_run"):
+			get_tree().reload_current_scene()
+		return
+
 	if _current_room_id < 0:
 		return
+
 	var room: Dictionary = _layout["rooms"][_current_room_id]
 	status_label.text = "Seed %d  ·  Sala %d/%d  ·  %s  ·  HP %d/%d" % [
 		run_seed,
@@ -49,9 +68,11 @@ func _process(_delta: float) -> void:
 		roundi(player.health.current_health),
 		roundi(player.health.max_health),
 	]
-	victory_label.visible = _victory
 
 func _enter_room(room_id: int, entry_slot: StringName) -> void:
+	if _game_over or _victory:
+		return
+
 	_transitioning = false
 	_clear_transient_projectiles()
 
@@ -120,15 +141,39 @@ func _on_room_cleared() -> void:
 	_cleared_rooms[_current_room_id] = true
 
 func _on_door_traversed(destination_room_id: int, exit_slot: StringName) -> void:
-	if _transitioning:
+	if _transitioning or _game_over or _victory:
 		return
 	_transitioning = true
 	var entry_slot: StringName = OPPOSITE_SLOT.get(exit_slot, &"")
 	call_deferred("_enter_room", destination_room_id, entry_slot)
 
+func _on_player_defeated() -> void:
+	if _game_over or _victory:
+		return
+	_game_over = true
+	_transitioning = true
+	_clear_transient_projectiles()
+
+	if is_instance_valid(_current_room):
+		_current_room.process_mode = Node.PROCESS_MODE_DISABLED
+
+	status_label.text = "RUN TERMINADA · R para reintentar"
+	mobile_controls.show_end_state()
+
 func _on_final_boss_defeated() -> void:
+	if _game_over:
+		return
 	_cleared_rooms[_current_room_id] = true
 	_victory = true
+	_transitioning = true
+	_clear_transient_projectiles()
+	player.set_physics_process(false)
+
+	if is_instance_valid(_current_room):
+		_current_room.process_mode = Node.PROCESS_MODE_DISABLED
+
+	status_label.text = "RIFT WARDEN DERROTADO · RUN COMPLETADA"
+	mobile_controls.show_end_state()
 
 func _clear_transient_projectiles() -> void:
 	for node in get_tree().get_nodes_in_group("transient_projectile"):

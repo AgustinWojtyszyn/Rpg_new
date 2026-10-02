@@ -15,7 +15,7 @@ Mobile-first 2D action roguelite built with Godot 4.7.2.
 
 ## Current playable engineering run
 
-The startup scene now creates a deterministic dungeon from a seed.
+The startup scene creates a deterministic dungeon from a seed.
 
 - Main path uses east/west doors with north/south side branches.
 - Combat doors stay locked until the room is cleared.
@@ -23,8 +23,11 @@ The startup scene now creates a deterministic dungeon from a seed.
 - Early encounters introduce skeletons, armored insects and raptors.
 - Grabbing plants join from depth 2.
 - Teleporting ranged aliens join from depth 4.
+- Mobile/desktop attack uses optional nearest-target aim assist, with last movement direction as fallback.
 - The T-Rex is a miniboss with vulnerable phases, telegraphed charges and two optional lever/set-piece interactions.
-- The Rift Warden is the final boss. Phase transitions can cast the player into themed pocket arenas; clearing the enemies returns to the same boss instance.
+- T-Rex breakable set pieces are real collision geometry for both the player and boss until they are destroyed.
+- The Rift Warden is the final boss. Phase transitions can cast the player into themed pocket arenas; clearing them returns to the same boss instance.
+- Player defeat ends the run; the room freezes and RETRY restarts cleanly.
 - No boss framework grants generic invulnerability.
 
 All visuals are still intentional programmer art. PixelLab assets should replace placeholders only after the gameplay contracts are stable.
@@ -35,8 +38,20 @@ All visuals are still intentional programmer art. PixelLab assets should replace
 - Space or Enter: attack
 - Shift: dash
 - E: interact with levers
+- R: restart after victory/defeat
 
-On touch devices, the project uses Godot 4.7's native virtual joystick plus touch attack/dash/interact buttons.
+On touch devices, the project uses Godot 4.7's native virtual joystick plus touch attack/dash/interact buttons and a contextual RETRY control.
+
+## Validation
+
+CI imports the project in Godot 4.7.2 and runs deterministic tests. The suite currently validates:
+
+- hundreds of dungeon seeds;
+- thousands of encounter budget/seed combinations;
+- reciprocal doors and reachability;
+- boss phase thresholds;
+- RNG stream separation;
+- critical scenes, InputMap actions and collision-layer contracts.
 
 ## Build
 
