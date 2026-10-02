@@ -147,3 +147,18 @@ Iteration 02 adds tests for:
 - AdMob/rewarded advertising.
 
 Those are separate gates so monetization and content polish cannot destabilize the run foundation.
+
+
+## CI hardening
+
+The validation workflow now has bounded execution and concurrency cancellation.
+
+- stale runs on the same ref are cancelled by newer validations;
+- the overall job has a hard timeout;
+- deterministic tests run behind an external timeout;
+- CI requires the explicit ALL TESTS PASSED marker;
+- script and parse errors fail the job;
+- every test suite prints start/end markers so runtime failures can be localized;
+- runtime scene smoke tests are independently bounded.
+
+This prevents a test runtime error from consuming runners indefinitely.

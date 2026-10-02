@@ -15,12 +15,18 @@ const TEST_SCRIPTS := [
 
 func _init() -> void:
 	var failures: Array[String] = []
+	print("TEST HARNESS START · %d suites" % TEST_SCRIPTS.size())
 
 	for test_script in TEST_SCRIPTS:
+		print("RUNNING SUITE · %s" % test_script.resource_path)
 		var test_case = test_script.new()
 		var case_failures: Array[String] = test_case.run()
 		for failure in case_failures:
 			failures.append("%s: %s" % [test_script.resource_path, failure])
+		print("FINISHED SUITE · %s · %d failure(s)" % [
+			test_script.resource_path,
+			case_failures.size(),
+		])
 
 	if failures.is_empty():
 		print("ALL TESTS PASSED (%d suites)" % TEST_SCRIPTS.size())
