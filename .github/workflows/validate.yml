@@ -24,3 +24,27 @@ jobs:
 
       - name: Run deterministic core tests
         run: ./godot --headless --path . --script res://tests/run_all.gd
+
+      - name: Boot dungeon run
+        run: |
+          ./godot --headless --path . --scene res://scenes/dungeon/dungeon_run.tscn --quit-after 180 --log-file ci-dungeon.log
+          if grep -E "SCRIPT ERROR|Parse Error" ci-dungeon.log; then
+            cat ci-dungeon.log
+            exit 1
+          fi
+
+      - name: Boot T-Rex encounter
+        run: |
+          ./godot --headless --path . --scene res://scenes/bosses/trex_arena.tscn --quit-after 180 --log-file ci-trex.log
+          if grep -E "SCRIPT ERROR|Parse Error" ci-trex.log; then
+            cat ci-trex.log
+            exit 1
+          fi
+
+      - name: Boot dimensional boss encounter
+        run: |
+          ./godot --headless --path . --scene res://scenes/bosses/dimensional_boss_encounter.tscn --quit-after 180 --log-file ci-rift.log
+          if grep -E "SCRIPT ERROR|Parse Error" ci-rift.log; then
+            cat ci-rift.log
+            exit 1
+          fi
