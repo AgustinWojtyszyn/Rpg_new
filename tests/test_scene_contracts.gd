@@ -8,6 +8,8 @@ const RIFT_ROOM_SCENE := preload("res://scenes/dungeon/rift_room_runtime.tscn")
 const TREX_BOSS_SCENE := preload("res://scenes/bosses/trex_boss.tscn")
 const RIFT_BOSS_SCENE := preload("res://scenes/bosses/rift_warden.tscn")
 const BREAKABLE_WALL_SCENE := preload("res://scenes/bosses/breakable_wall.tscn")
+const CHOICE_ROOM_SCENE := preload("res://scenes/dungeon/choice_room.tscn")
+const CHOICE_PEDESTAL_SCENE := preload("res://scenes/rewards/choice_pedestal.tscn")
 
 func run() -> Array[String]:
 	var failures: Array[String] = []
@@ -109,6 +111,8 @@ func _validate_run_scene_contracts(failures: Array[String]) -> void:
 			"UI/Status",
 			"UI/BossName",
 			"UI/BossHealth",
+			"UI/Build",
+			"UI/Profile",
 			"UI/GameOver",
 			"UI/Victory",
 			"MobileControls",
@@ -123,6 +127,17 @@ func _validate_run_scene_contracts(failures: Array[String]) -> void:
 		if trex_room.get_node_or_null("TrexBoss") == null:
 			failures.append("T-Rex runtime room is missing its boss.")
 		trex_room.free()
+
+	var choice_room := CHOICE_ROOM_SCENE.instantiate()
+	var pedestal := CHOICE_PEDESTAL_SCENE.instantiate()
+	if choice_room == null:
+		failures.append("Choice room failed to instantiate.")
+	else:
+		choice_room.free()
+	if pedestal == null:
+		failures.append("Choice pedestal failed to instantiate.")
+	else:
+		pedestal.free()
 
 	if rift_room == null:
 		failures.append("Rift runtime room failed to instantiate.")

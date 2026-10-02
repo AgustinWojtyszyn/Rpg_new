@@ -6,6 +6,7 @@
 
 [node name="DungeonRun" type="Node2D"]
 script = ExtResource("1")
+run_seed = 0
 
 [node name="RoomLayer" type="Node2D" parent="."]
 
@@ -20,20 +21,30 @@ layer = 10
 [node name="Status" type="Label" parent="UI"]
 offset_left = 18.0
 offset_top = 14.0
-offset_right = 820.0
-offset_bottom = 42.0
+offset_right = 700.0
+offset_bottom = 40.0
 text = "RUN"
 theme_override_colors/font_color = Color(0.90, 0.94, 1, 1)
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 16
 
 [node name="Build" type="Label" parent="UI"]
 offset_left = 18.0
-offset_top = 42.0
-offset_right = 760.0
-offset_bottom = 70.0
+offset_top = 40.0
+offset_right = 650.0
+offset_bottom = 66.0
 text = "BUILD"
 theme_override_colors/font_color = Color(0.70, 0.84, 1, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 14
+
+[node name="Profile" type="Label" parent="UI"]
+offset_left = 620.0
+offset_top = 14.0
+offset_right = 942.0
+offset_bottom = 66.0
+text = "META"
+horizontal_alignment = 2
+theme_override_colors/font_color = Color(0.64, 1, 0.76, 1)
+theme_override_font_sizes/font_size = 13
 
 [node name="BossName" type="Label" parent="UI"]
 visible = false
@@ -57,24 +68,24 @@ show_percentage = false
 
 [node name="Victory" type="Label" parent="UI"]
 visible = false
-offset_left = 235.0
-offset_top = 205.0
-offset_right = 725.0
-offset_bottom = 315.0
-text = "RIFT WARDEN DERROTADO\nRUN COMPLETADA\nR / RETRY para jugar otra vez"
+offset_left = 190.0
+offset_top = 190.0
+offset_right = 770.0
+offset_bottom = 335.0
+text = "RIFT WARDEN DERROTADO\nRUN COMPLETADA"
 horizontal_alignment = 1
 theme_override_colors/font_color = Color(0.65, 1, 0.78, 1)
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 26
 
 [node name="GameOver" type="Label" parent="UI"]
 visible = false
-offset_left = 260.0
-offset_top = 205.0
-offset_right = 700.0
-offset_bottom = 315.0
-text = "RUN TERMINADA\nR / RETRY para reintentar"
+offset_left = 190.0
+offset_top = 190.0
+offset_right = 770.0
+offset_bottom = 335.0
+text = "RUN TERMINADA"
 horizontal_alignment = 1
 theme_override_colors/font_color = Color(1, 0.50, 0.42, 1)
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 26
 
 [node name="MobileControls" parent="." instance=ExtResource("3")]

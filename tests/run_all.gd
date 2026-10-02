@@ -10,6 +10,7 @@ const TEST_SCRIPTS := [
 	preload("res://tests/test_scene_contracts.gd"),
 	preload("res://tests/test_run_build.gd"),
 	preload("res://tests/test_reward_director.gd"),
+	preload("res://tests/test_progression.gd"),
 ]
 
 func _init() -> void:
