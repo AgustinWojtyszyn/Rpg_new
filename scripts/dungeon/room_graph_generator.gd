@@ -39,6 +39,8 @@ func generate(seed_value: int, main_path_rooms: int = 9, side_room_count: int = 
 				kind = KIND_EVENT
 		rooms.append(_make_room(index, kind, index))
 
+	_guarantee_choice_rooms(rooms, miniboss_index, rng)
+
 	for index in range(main_path_rooms - 1):
 		_connect(rooms, index, index + 1, SLOT_EAST, SLOT_WEST)
 
@@ -83,6 +85,57 @@ func generate(seed_value: int, main_path_rooms: int = 9, side_room_count: int = 
 		"boss_id": main_path_rooms - 1,
 		"rooms": rooms,
 	}
+
+func _guarantee_choice_rooms(
+	rooms: Array[Dictionary],
+	miniboss_index: int,
+	rng: RandomNumberGenerator
+) -> void:
+	var eligible: Array[int] = []
+	for index in range(1, rooms.size() - 1):
+		if index != miniboss_index:
+			eligible.append(index)
+
+	if eligible.size() < 2:
+		return
+
+	if _count_kind(rooms, eligible, KIND_TREASURE) == 0:
+		var candidates := _ids_with_kind(rooms, eligible, KIND_COMBAT)
+		if candidates.is_empty():
+			candidates = _ids_with_kind(rooms, eligible, KIND_EVENT)
+		var target := candidates[rng.randi_range(0, candidates.size() - 1)]
+		rooms[target]["kind"] = KIND_TREASURE
+
+	if _count_kind(rooms, eligible, KIND_EVENT) == 0:
+		var candidates := _ids_with_kind(rooms, eligible, KIND_COMBAT)
+		if candidates.is_empty():
+			candidates = _ids_with_kind(rooms, eligible, KIND_TREASURE)
+		# Keep at least one treasure when converting from an all-treasure layout.
+		if candidates.size() > 1:
+			var target := candidates[rng.randi_range(0, candidates.size() - 1)]
+			rooms[target]["kind"] = KIND_EVENT
+
+func _count_kind(
+	rooms: Array[Dictionary],
+	ids: Array[int],
+	kind: StringName
+) -> int:
+	var count := 0
+	for room_id in ids:
+		if rooms[room_id]["kind"] == kind:
+			count += 1
+	return count
+
+func _ids_with_kind(
+	rooms: Array[Dictionary],
+	ids: Array[int],
+	kind: StringName
+) -> Array[int]:
+	var result: Array[int] = []
+	for room_id in ids:
+		if rooms[room_id]["kind"] == kind:
+			result.append(room_id)
+	return result
 
 func _make_room(id: int, kind: StringName, depth: int) -> Dictionary:
 	var connections: Array[int] = []

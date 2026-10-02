@@ -23,12 +23,18 @@ func _validate_layout(layout: Dictionary, failures: Array[String], seed_value: i
 	var rooms: Array = layout["rooms"]
 	var boss_count := 0
 	var miniboss_count := 0
+	var treasure_count := 0
+	var event_count := 0
 
 	for room in rooms:
 		if room["kind"] == &"boss":
 			boss_count += 1
 		elif room["kind"] == &"miniboss":
 			miniboss_count += 1
+		elif room["kind"] == &"treasure":
+			treasure_count += 1
+		elif room["kind"] == &"event":
+			event_count += 1
 
 		if room["connections"].size() > 4:
 			failures.append("Seed %d: room exposes more than four directional doors." % seed_value)
@@ -42,6 +48,12 @@ func _validate_layout(layout: Dictionary, failures: Array[String], seed_value: i
 		return
 	if miniboss_count != 1:
 		failures.append("Seed %d: expected exactly one miniboss room." % seed_value)
+		return
+	if treasure_count < 1:
+		failures.append("Seed %d: run must guarantee at least one treasure room." % seed_value)
+		return
+	if event_count < 1:
+		failures.append("Seed %d: run must guarantee at least one event room." % seed_value)
 		return
 	if not _all_rooms_reachable(layout):
 		failures.append("Seed %d: generated an unreachable room." % seed_value)
