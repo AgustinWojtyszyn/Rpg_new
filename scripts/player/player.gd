@@ -1,29 +1,75 @@
 class_name PlayerCharacter
 extends CharacterBody2D
 
+signal interact_requested
+
 @export_range(10.0, 1000.0, 1.0) var move_speed: float = 220.0
+@export_range(10.0, 1500.0, 1.0) var dash_speed: float = 560.0
+@export_range(0.05, 1.0, 0.01) var dash_duration: float = 0.14
+@export_range(0.1, 5.0, 0.05) var dash_cooldown: float = 0.85
 @export var projectile_scene: PackedScene
 
 @onready var health: HealthComponent = $Health
 
 var last_aim_direction := Vector2.RIGHT
+var _external_velocity := Vector2.ZERO
+var _dash_direction := Vector2.RIGHT
+var _dash_time_left := 0.0
+var _dash_cooldown_left := 0.0
+var _dash_requested := false
 
 func _ready() -> void:
 	health.died.connect(_on_died)
 	queue_redraw()
 
-func _physics_process(_delta: float) -> void:
+func _unhandled_input(event: InputEvent) -> void:
+	if event is not InputEventKey:
+		return
+	var key_event := event as InputEventKey
+	if not key_event.pressed or key_event.echo:
+		return
+	if key_event.physical_keycode == KEY_SHIFT:
+		_dash_requested = true
+	elif key_event.physical_keycode == KEY_E:
+		interact_requested.emit()
+
+func _physics_process(delta: float) -> void:
+	_dash_cooldown_left = maxf(0.0, _dash_cooldown_left - delta)
+	_dash_time_left = maxf(0.0, _dash_time_left - delta)
+
 	var input_vector := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	if input_vector != Vector2.ZERO:
 		last_aim_direction = input_vector.normalized()
-	velocity = input_vector * move_speed
+
+	if _dash_requested and _dash_cooldown_left <= 0.0:
+		_dash_direction = input_vector.normalized() if input_vector != Vector2.ZERO else last_aim_direction
+		_dash_time_left = dash_duration
+		_dash_cooldown_left = dash_cooldown
+	_dash_requested = false
+
+	if _dash_time_left > 0.0:
+		velocity = _dash_direction * dash_speed + _external_velocity * 0.25
+	else:
+		velocity = input_vector * move_speed + _external_velocity
+
 	move_and_slide()
+	_external_velocity = _external_velocity.move_toward(Vector2.ZERO, 900.0 * delta)
 
 	if Input.is_action_just_pressed("ui_accept"):
 		_fire()
 
 	global_position.x = clampf(global_position.x, 20.0, 940.0)
 	global_position.y = clampf(global_position.y, 20.0, 520.0)
+	queue_redraw()
+
+func apply_pull(source_position: Vector2, strength: float) -> void:
+	var pull_direction := (source_position - global_position).normalized()
+	_external_velocity += pull_direction * maxf(0.0, strength)
+	if _external_velocity.length() > 260.0:
+		_external_velocity = _external_velocity.normalized() * 260.0
+
+func is_dashing() -> bool:
+	return _dash_time_left > 0.0
 
 func _fire() -> void:
 	if projectile_scene == null:
@@ -31,18 +77,20 @@ func _fire() -> void:
 	var projectile := projectile_scene.instantiate() as Projectile
 	if projectile == null:
 		return
+	get_tree().current_scene.add_child(projectile)
 	projectile.global_position = global_position + last_aim_direction * 20.0
 	projectile.launch(last_aim_direction)
-	get_tree().current_scene.add_child(projectile)
 
 func receive_hit(amount: float) -> void:
 	health.apply_damage(amount)
 
 func _on_died() -> void:
 	global_position = Vector2(480.0, 270.0)
+	_external_velocity = Vector2.ZERO
 	health.reset()
 
 func _draw() -> void:
-	draw_circle(Vector2.ZERO, 13.0, Color(0.35, 0.78, 1.0))
+	var outer := Color(0.55, 0.92, 1.0) if is_dashing() else Color(0.35, 0.78, 1.0)
+	draw_circle(Vector2.ZERO, 13.0, outer)
 	draw_circle(Vector2.ZERO, 8.0, Color(0.10, 0.18, 0.28))
 	draw_line(Vector2.ZERO, last_aim_direction * 18.0, Color.WHITE, 3.0)

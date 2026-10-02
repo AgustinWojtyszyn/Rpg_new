@@ -4,6 +4,7 @@ extends Area2D
 @export_range(1.0, 2000.0, 1.0) var speed: float = 520.0
 @export_range(0.1, 1000.0, 0.1) var damage: float = 12.0
 @export_range(0.1, 10.0, 0.1) var lifetime: float = 1.4
+@export var visual_color: Color = Color(1.0, 0.78, 0.20)
 
 var direction := Vector2.RIGHT
 
@@ -28,5 +29,5 @@ func _on_body_entered(body: Node) -> void:
 		queue_free()
 
 func _draw() -> void:
-	draw_circle(Vector2.ZERO, 4.0, Color(1.0, 0.78, 0.20))
+	draw_circle(Vector2.ZERO, 4.5, visual_color)
 	draw_circle(Vector2.ZERO, 2.0, Color.WHITE)

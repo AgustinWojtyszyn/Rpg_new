@@ -2,6 +2,9 @@ extends Node2D
 
 const PLAYER_SCENE := preload("res://scenes/player/player.tscn")
 const ENEMY_SCENE := preload("res://scenes/enemies/enemy_base.tscn")
+const RAPTOR_SCENE := preload("res://scenes/enemies/raptor_scout.tscn")
+const ROOT_VINE_SCENE := preload("res://scenes/enemies/root_vine.tscn")
+const ORB_STALKER_SCENE := preload("res://scenes/enemies/orb_stalker.tscn")
 
 const ENEMY_DEFINITIONS := [
 	preload("res://resources/enemies/raptor_scout.tres"),
@@ -27,10 +30,22 @@ func _ready() -> void:
 		Vector2(480.0, 90.0),
 	]
 	for index in range(ENEMY_DEFINITIONS.size()):
-		var enemy := ENEMY_SCENE.instantiate() as EnemyBase
-		enemy.configure(ENEMY_DEFINITIONS[index], player)
+		var definition: EnemyDefinition = ENEMY_DEFINITIONS[index]
+		var enemy := _scene_for(definition).instantiate() as EnemyBase
+		enemy.configure(definition, player)
 		enemy.position = spawn_positions[index]
 		arena.add_child(enemy)
+
+func _scene_for(definition: EnemyDefinition) -> PackedScene:
+	match definition.family:
+		EnemyDefinition.Family.DINOSAUR:
+			return RAPTOR_SCENE
+		EnemyDefinition.Family.PLANT:
+			return ROOT_VINE_SCENE
+		EnemyDefinition.Family.ALIEN:
+			return ORB_STALKER_SCENE
+		_:
+			return ENEMY_SCENE
 
 func _draw() -> void:
 	draw_rect(Rect2(0.0, 0.0, 960.0, 540.0), Color(0.055, 0.065, 0.09), true)
