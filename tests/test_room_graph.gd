@@ -73,7 +73,7 @@ func _all_rooms_reachable(layout: Dictionary) -> bool:
 	var visited: Dictionary = {}
 
 	while not pending.is_empty():
-		var current := pending.pop_front()
+		var current: int = int(pending.pop_front())
 		if visited.has(current):
 			continue
 		visited[current] = true
