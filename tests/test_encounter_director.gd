@@ -10,6 +10,7 @@ func run() -> Array[String]:
 		_make_enemy(&"vine", EnemyDefinition.Role.CONTROLLER, 4),
 		_make_enemy(&"alien", EnemyDefinition.Role.RANGED, 3),
 		_make_enemy(&"beetle", EnemyDefinition.Role.TANK, 5),
+		_make_enemy(&"skeleton", EnemyDefinition.Role.CHASER, 2),
 	]
 
 	var first_rng := RandomNumberGenerator.new()
@@ -20,21 +21,37 @@ func run() -> Array[String]:
 	var director := EncounterDirectorScript.new()
 	var first := director.build_encounter(pool, 12, first_rng, 8)
 	var second := director.build_encounter(pool, 12, second_rng, 8)
-
 	if _ids(first) != _ids(second):
-		failures.append("Encounter generation must be deterministic for the same RNG state.")
+		failures.append("Encounter generation must be deterministic for equal RNG state.")
+		return failures
 
-	var total_cost := 0
-	var controller_count := 0
-	for enemy in first:
-		total_cost += enemy.encounter_cost
-		if enemy.role == EnemyDefinition.Role.CONTROLLER:
-			controller_count += 1
+	for seed_value in range(1, 301):
+		for budget in range(1, 21):
+			var rng := RandomNumberGenerator.new()
+			rng.seed = seed_value
+			var encounter := director.build_encounter(pool, budget, rng, 8)
+			var total_cost := 0
+			var controller_count := 0
+			var tank_count := 0
+			for enemy in encounter:
+				total_cost += enemy.encounter_cost
+				if enemy.role == EnemyDefinition.Role.CONTROLLER:
+					controller_count += 1
+				elif enemy.role == EnemyDefinition.Role.TANK:
+					tank_count += 1
 
-	if total_cost > 12:
-		failures.append("Encounter cost must never exceed the budget.")
-	if controller_count > 1:
-		failures.append("Encounter role caps must prevent controller spam.")
+			if total_cost > budget:
+				failures.append("Seed %d budget %d: encounter exceeded budget." % [seed_value, budget])
+				return failures
+			if encounter.size() > 8:
+				failures.append("Seed %d budget %d: encounter exceeded unit cap." % [seed_value, budget])
+				return failures
+			if controller_count > 1:
+				failures.append("Seed %d budget %d: controller cap failed." % [seed_value, budget])
+				return failures
+			if tank_count > 2:
+				failures.append("Seed %d budget %d: tank cap failed." % [seed_value, budget])
+				return failures
 
 	return failures
 

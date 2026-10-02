@@ -28,8 +28,9 @@ func _on_body_entered(body: Node) -> void:
 
 func _draw() -> void:
 	var color := Color(0.20, 0.88, 1.0) if active else Color(0.78, 0.22, 0.18)
+	var translucent := Color(color.r, color.g, color.b, 0.22)
 	var half := Vector2(30, 12)
 	if slot == &"east" or slot == &"west":
 		half = Vector2(12, 30)
-	draw_rect(Rect2(-half, half * 2.0), Color(color, 0.22), true)
+	draw_rect(Rect2(-half, half * 2.0), translucent, true)
 	draw_rect(Rect2(-half, half * 2.0), color, false, 3.0)

@@ -5,15 +5,25 @@ const RoomGraphGeneratorScript := preload("res://scripts/dungeon/room_graph_gene
 func run() -> Array[String]:
 	var failures: Array[String] = []
 	var generator := RoomGraphGeneratorScript.new()
+
 	var first: Dictionary = generator.generate(424242, 9, 4)
 	var second: Dictionary = generator.generate(424242, 9, 4)
-
 	if first != second:
 		failures.append("Same seed must generate the same room graph.")
 
-	var rooms: Array = first["rooms"]
+	for seed_value in range(1, 501):
+		var layout: Dictionary = generator.generate(seed_value, 9, 4)
+		_validate_layout(layout, failures, seed_value)
+		if not failures.is_empty():
+			break
+
+	return failures
+
+func _validate_layout(layout: Dictionary, failures: Array[String], seed_value: int) -> void:
+	var rooms: Array = layout["rooms"]
 	var boss_count := 0
 	var miniboss_count := 0
+
 	for room in rooms:
 		if room["kind"] == &"boss":
 			boss_count += 1
@@ -21,24 +31,29 @@ func run() -> Array[String]:
 			miniboss_count += 1
 
 		if room["connections"].size() > 4:
-			failures.append("A room cannot expose more than four directional doors.")
+			failures.append("Seed %d: room exposes more than four directional doors." % seed_value)
+			return
 		if room["doors"].size() != room["connections"].size():
-			failures.append("Every connection must have exactly one directional door.")
+			failures.append("Seed %d: every connection must have one directional door." % seed_value)
+			return
 
 	if boss_count != 1:
-		failures.append("Dungeon graph must contain exactly one final boss room.")
+		failures.append("Seed %d: expected exactly one final boss room." % seed_value)
+		return
 	if miniboss_count != 1:
-		failures.append("Dungeon graph must contain exactly one miniboss room.")
-	if not _all_rooms_reachable(first):
-		failures.append("Every generated room must be reachable from the start.")
-	if int(first["boss_id"]) == int(first["start_id"]):
-		failures.append("Boss room cannot be the start room.")
-	if int(first["miniboss_id"]) == int(first["boss_id"]):
-		failures.append("Miniboss and final boss must be different rooms.")
+		failures.append("Seed %d: expected exactly one miniboss room." % seed_value)
+		return
+	if not _all_rooms_reachable(layout):
+		failures.append("Seed %d: generated an unreachable room." % seed_value)
+		return
+	if int(layout["boss_id"]) == int(layout["start_id"]):
+		failures.append("Seed %d: boss room equals start room." % seed_value)
+		return
+	if int(layout["miniboss_id"]) == int(layout["boss_id"]):
+		failures.append("Seed %d: miniboss equals final boss." % seed_value)
+		return
 	if not _doors_are_reciprocal(rooms):
-		failures.append("Directional doors must have reciprocal destinations.")
-
-	return failures
+		failures.append("Seed %d: directional door reciprocity failed." % seed_value)
 
 func _all_rooms_reachable(layout: Dictionary) -> bool:
 	var rooms: Array = layout["rooms"]

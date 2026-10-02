@@ -57,7 +57,8 @@ func _enter_room(room_id: int, entry_slot: StringName) -> void:
 
 	if is_instance_valid(_current_room):
 		_current_room.process_mode = Node.PROCESS_MODE_DISABLED
-		room_layer.remove_child(_current_room)
+		_current_room.visible = false
+		_current_room.position = Vector2(10000, 10000)
 		_current_room.queue_free()
 		_current_room = null
 
