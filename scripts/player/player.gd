@@ -8,6 +8,8 @@ signal defeated
 @export_range(10.0, 1500.0, 1.0) var dash_speed: float = 560.0
 @export_range(0.05, 1.0, 0.01) var dash_duration: float = 0.14
 @export_range(0.1, 5.0, 0.05) var dash_cooldown: float = 0.85
+@export_range(0.05, 2.0, 0.05) var hurt_invulnerability: float = 0.35
+@export var dash_invulnerable: bool = true
 @export var aim_assist_enabled: bool = true
 @export_range(50.0, 1000.0, 10.0) var aim_assist_range: float = 460.0
 @export var projectile_scene: PackedScene
@@ -19,6 +21,7 @@ var _external_velocity := Vector2.ZERO
 var _dash_direction := Vector2.RIGHT
 var _dash_time_left := 0.0
 var _dash_cooldown_left := 0.0
+var _hurt_invulnerability_left := 0.0
 var _defeated := false
 
 func _ready() -> void:
@@ -32,6 +35,7 @@ func _physics_process(delta: float) -> void:
 
 	_dash_cooldown_left = maxf(0.0, _dash_cooldown_left - delta)
 	_dash_time_left = maxf(0.0, _dash_time_left - delta)
+	_hurt_invulnerability_left = maxf(0.0, _hurt_invulnerability_left - delta)
 
 	var input_vector := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	if input_vector != Vector2.ZERO:
@@ -79,6 +83,7 @@ func revive(at_position: Vector2) -> void:
 	_external_velocity = Vector2.ZERO
 	_dash_time_left = 0.0
 	_dash_cooldown_left = 0.0
+	_hurt_invulnerability_left = 0.0
 	_defeated = false
 	health.reset()
 	set_physics_process(true)
@@ -127,9 +132,16 @@ func _get_attack_direction() -> Vector2:
 	return last_aim_direction
 
 func receive_hit(amount: float) -> void:
-	if _defeated:
+	if _defeated or amount <= 0.0:
 		return
-	health.apply_damage(amount)
+	if dash_invulnerable and is_dashing():
+		return
+	if _hurt_invulnerability_left > 0.0:
+		return
+
+	var applied := health.apply_damage(amount)
+	if applied > 0.0 and not _defeated:
+		_hurt_invulnerability_left = hurt_invulnerability
 
 func _on_died() -> void:
 	if _defeated:
@@ -142,9 +154,14 @@ func _on_died() -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	var outer := Color(0.38, 0.40, 0.45) if _defeated else Color(0.35, 0.78, 1.0)
-	if is_dashing():
+	var outer := Color(0.35, 0.78, 1.0)
+	if _defeated:
+		outer = Color(0.38, 0.40, 0.45)
+	elif is_dashing():
 		outer = Color(0.55, 0.92, 1.0)
+	elif _hurt_invulnerability_left > 0.0:
+		outer = Color(1.0, 0.72, 0.72)
+
 	draw_circle(Vector2.ZERO, 13.0, outer)
 	draw_circle(Vector2.ZERO, 8.0, Color(0.10, 0.18, 0.28))
 	draw_line(Vector2.ZERO, last_aim_direction * 18.0, Color.WHITE, 3.0)
