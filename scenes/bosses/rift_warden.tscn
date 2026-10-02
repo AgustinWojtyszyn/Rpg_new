@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/rift_warden.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/components/health_component.gd" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/combat/enemy_projectile.tscn" id="3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape_warden"]
+radius = 29.0
+
+[node name="RiftWarden" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1")
+max_health = 920.0
+phase_thresholds = PackedFloat32Array(0.72, 0.45, 0.2)
+projectile_scene = ExtResource("3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape_warden")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("2")

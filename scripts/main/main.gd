@@ -1,11 +1,6 @@
 extends Node2D
 
 const PLAYER_SCENE := preload("res://scenes/player/player.tscn")
-const ENEMY_SCENE := preload("res://scenes/enemies/enemy_base.tscn")
-const RAPTOR_SCENE := preload("res://scenes/enemies/raptor_scout.tscn")
-const ROOT_VINE_SCENE := preload("res://scenes/enemies/root_vine.tscn")
-const ORB_STALKER_SCENE := preload("res://scenes/enemies/orb_stalker.tscn")
-
 const ENEMY_DEFINITIONS := [
 	preload("res://resources/enemies/raptor_scout.tres"),
 	preload("res://resources/enemies/root_vine.tres"),
@@ -15,6 +10,8 @@ const ENEMY_DEFINITIONS := [
 ]
 
 @onready var arena: Node2D = $Arena
+
+var _enemy_registry := EnemySceneRegistry.new()
 
 func _ready() -> void:
 	queue_redraw()
@@ -31,27 +28,21 @@ func _ready() -> void:
 	]
 	for index in range(ENEMY_DEFINITIONS.size()):
 		var definition: EnemyDefinition = ENEMY_DEFINITIONS[index]
-		var enemy := _scene_for(definition).instantiate() as EnemyBase
+		var enemy := _enemy_registry.scene_for(definition).instantiate() as EnemyBase
 		enemy.configure(definition, player)
 		enemy.position = spawn_positions[index]
 		arena.add_child(enemy)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		var key_event := event as InputEventKey
-		if key_event.pressed and not key_event.echo and key_event.physical_keycode == KEY_B:
-			get_tree().change_scene_to_file("res://scenes/bosses/trex_arena.tscn")
-
-func _scene_for(definition: EnemyDefinition) -> PackedScene:
-	match definition.family:
-		EnemyDefinition.Family.DINOSAUR:
-			return RAPTOR_SCENE
-		EnemyDefinition.Family.PLANT:
-			return ROOT_VINE_SCENE
-		EnemyDefinition.Family.ALIEN:
-			return ORB_STALKER_SCENE
-		_:
-			return ENEMY_SCENE
+	if event is not InputEventKey:
+		return
+	var key_event := event as InputEventKey
+	if not key_event.pressed or key_event.echo:
+		return
+	if key_event.physical_keycode == KEY_B:
+		get_tree().change_scene_to_file("res://scenes/bosses/trex_arena.tscn")
+	elif key_event.physical_keycode == KEY_D:
+		get_tree().change_scene_to_file("res://scenes/bosses/dimensional_boss_encounter.tscn")
 
 func _draw() -> void:
 	draw_rect(Rect2(0.0, 0.0, 960.0, 540.0), Color(0.055, 0.065, 0.09), true)

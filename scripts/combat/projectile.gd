@@ -9,6 +9,7 @@ extends Area2D
 var direction := Vector2.RIGHT
 
 func _ready() -> void:
+	add_to_group("transient_projectile")
 	body_entered.connect(_on_body_entered)
 	queue_redraw()
 
