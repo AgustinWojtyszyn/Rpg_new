@@ -21,17 +21,26 @@ layer = 10
 offset_left = 18.0
 offset_top = 14.0
 offset_right = 820.0
-offset_bottom = 46.0
+offset_bottom = 42.0
 text = "RUN"
 theme_override_colors/font_color = Color(0.90, 0.94, 1, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 17
+
+[node name="Build" type="Label" parent="UI"]
+offset_left = 18.0
+offset_top = 42.0
+offset_right = 760.0
+offset_bottom = 70.0
+text = "BUILD"
+theme_override_colors/font_color = Color(0.70, 0.84, 1, 1)
+theme_override_font_sizes/font_size = 15
 
 [node name="BossName" type="Label" parent="UI"]
 visible = false
 offset_left = 320.0
-offset_top = 18.0
+offset_top = 74.0
 offset_right = 640.0
-offset_bottom = 46.0
+offset_bottom = 100.0
 text = "BOSS"
 horizontal_alignment = 1
 theme_override_colors/font_color = Color(1, 0.82, 0.42, 1)
@@ -40,9 +49,9 @@ theme_override_font_sizes/font_size = 17
 [node name="BossHealth" type="ProgressBar" parent="UI"]
 visible = false
 offset_left = 320.0
-offset_top = 48.0
+offset_top = 102.0
 offset_right = 640.0
-offset_bottom = 66.0
+offset_bottom = 120.0
 value = 100.0
 show_percentage = false
 
