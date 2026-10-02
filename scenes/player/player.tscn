@@ -21,4 +21,4 @@ script = ExtResource("2")
 max_health = 100.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
-enabled = true
+enabled = false

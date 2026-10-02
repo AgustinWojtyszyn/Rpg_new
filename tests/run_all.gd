@@ -6,6 +6,7 @@ const TEST_SCRIPTS := [
 	preload("res://tests/test_encounter_director.gd"),
 	preload("res://tests/test_run_rng.gd"),
 	preload("res://tests/test_room_selector.gd"),
+	preload("res://tests/test_boss_phase_model.gd"),
 ]
 
 func _init() -> void:

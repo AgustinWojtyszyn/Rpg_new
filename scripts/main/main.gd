@@ -36,6 +36,12 @@ func _ready() -> void:
 		enemy.position = spawn_positions[index]
 		arena.add_child(enemy)
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		var key_event := event as InputEventKey
+		if key_event.pressed and not key_event.echo and key_event.physical_keycode == KEY_B:
+			get_tree().change_scene_to_file("res://scenes/bosses/trex_arena.tscn")
+
 func _scene_for(definition: EnemyDefinition) -> PackedScene:
 	match definition.family:
 		EnemyDefinition.Family.DINOSAUR:
