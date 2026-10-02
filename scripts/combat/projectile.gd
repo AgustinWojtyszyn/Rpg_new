@@ -111,7 +111,15 @@ func _apply_collision_radius() -> void:
 	collision.shape = unique_shape
 
 func _draw() -> void:
+	var tail_length := clampf(speed * 0.035, 10.0, 34.0)
+	draw_line(
+		Vector2.ZERO,
+		-direction * tail_length,
+		Color(visual_color.r, visual_color.g, visual_color.b, 0.24),
+		maxf(2.0, projectile_radius * 1.25)
+	)
+	draw_circle(Vector2.ZERO, projectile_radius + 2.0, Color(visual_color.r, visual_color.g, visual_color.b, 0.18))
 	draw_circle(Vector2.ZERO, projectile_radius, visual_color)
 	draw_circle(Vector2.ZERO, maxf(1.5, projectile_radius * 0.42), Color.WHITE)
 	if explosion_radius > 0.0:
-		draw_arc(Vector2.ZERO, projectile_radius + 4.0, 0.0, TAU, 20, Color(visual_color, 0.55), 2.0)
+		draw_arc(Vector2.ZERO, projectile_radius + 5.0, 0.0, TAU, 20, Color(visual_color.r, visual_color.g, visual_color.b, 0.62), 2.0)

@@ -250,6 +250,17 @@ func _draw() -> void:
 	elif _hurt_invulnerability_left > 0.0:
 		outer = Color(1.0, 0.72, 0.72)
 
-	draw_circle(Vector2.ZERO, 13.0, outer)
-	draw_circle(Vector2.ZERO, 8.0, Color(0.10, 0.18, 0.28))
-	draw_line(Vector2.ZERO, last_aim_direction * 18.0, Color.WHITE, 3.0)
+	var weapon_color := Color(0.82, 0.90, 1.0)
+	if run_build != null and run_build.weapon != null:
+		weapon_color = run_build.weapon.projectile_color
+
+	draw_circle(Vector2(2, 5), 15.0, Color(0.0, 0.0, 0.0, 0.24))
+	draw_circle(Vector2.ZERO, 14.0, outer.darkened(0.28))
+	draw_circle(Vector2.ZERO, 12.0, outer)
+	draw_circle(Vector2.ZERO, 7.0, Color(0.08, 0.12, 0.20))
+	draw_line(last_aim_direction * 7.0, last_aim_direction * 23.0, weapon_color.darkened(0.28), 6.0)
+	draw_line(last_aim_direction * 8.0, last_aim_direction * 24.0, weapon_color, 3.0)
+	draw_circle(last_aim_direction * 24.0, 3.0, weapon_color.lightened(0.24))
+
+	if is_dashing():
+		draw_arc(Vector2.ZERO, 20.0, 0.0, TAU, 28, Color(0.62, 0.96, 1.0, 0.72), 3.0)

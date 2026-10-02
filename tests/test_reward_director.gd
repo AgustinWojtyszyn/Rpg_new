@@ -23,6 +23,15 @@ func run() -> Array[String]:
 	if _has_duplicate_ids(first):
 		failures.append("Treasure options must not repeat the same reward id.")
 
+	var maxed_build := RunBuild.new()
+	for modifier in RunModifierCatalog.all():
+		maxed_build.add_modifier(modifier)
+	var maxed_rng := RandomNumberGenerator.new()
+	maxed_rng.seed = 98
+	var maxed_options := director.build_treasure_options(maxed_build, maxed_rng, weapon_ids, 3)
+	if maxed_options.size() != 3:
+		failures.append("Treasure rooms must still provide three choices for a maxed build.")
+
 	build.add_modifier(RunModifierCatalog.get_by_id(&"predator_sigil"))
 	var event_rng := RandomNumberGenerator.new()
 	event_rng.seed = 1

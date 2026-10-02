@@ -24,11 +24,13 @@ var room_data: Dictionary = {}
 var player: PlayerCharacter
 var is_cleared: bool = false
 var _doors: Array[RoomDoor] = []
+var _decor_points: Array[Vector2] = []
 
 func setup_base(data: Dictionary, run_player: PlayerCharacter, initially_cleared: bool) -> void:
 	room_data = data
 	player = run_player
 	is_cleared = initially_cleared
+	_prepare_decor()
 	_build_doors()
 	queue_redraw()
 
@@ -49,6 +51,19 @@ func spawn_position_for_entry(entry_slot: StringName) -> Vector2:
 func get_boss() -> BossBase:
 	return null
 
+func _prepare_decor() -> void:
+	_decor_points.clear()
+	var rng := RandomNumberGenerator.new()
+	rng.seed = (
+		(int(room_data.get("id", 0)) + 1) * 7919
+		+ (int(room_data.get("depth", 0)) + 1) * 104729
+	)
+	for _index in range(14):
+		_decor_points.append(Vector2(
+			rng.randf_range(78.0, 882.0),
+			rng.randf_range(104.0, 462.0)
+		))
+
 func _build_doors() -> void:
 	var doors_data: Dictionary = room_data.get("doors", {})
 	for slot_variant in doors_data:
@@ -65,28 +80,74 @@ func _build_doors() -> void:
 func _on_door_traversed(destination_room_id: int, exit_slot: StringName) -> void:
 	door_traversed.emit(destination_room_id, exit_slot)
 
-func _draw() -> void:
-	var kind := StringName(room_data.get("kind", &"combat"))
-	var floor_color := Color(0.065, 0.075, 0.105)
+func _palette_for_kind(kind: StringName) -> Dictionary:
 	match kind:
 		&"start":
-			floor_color = Color(0.055, 0.105, 0.14)
+			return {"floor": Color(0.045, 0.09, 0.13), "accent": Color(0.24, 0.82, 1.0)}
 		&"event":
-			floor_color = Color(0.11, 0.07, 0.15)
+			return {"floor": Color(0.09, 0.045, 0.13), "accent": Color(0.72, 0.38, 1.0)}
 		&"treasure":
-			floor_color = Color(0.14, 0.105, 0.045)
+			return {"floor": Color(0.13, 0.085, 0.035), "accent": Color(1.0, 0.70, 0.20)}
 		&"miniboss":
-			floor_color = Color(0.13, 0.075, 0.045)
+			return {"floor": Color(0.12, 0.055, 0.03), "accent": Color(1.0, 0.34, 0.12)}
 		&"boss":
-			floor_color = Color(0.10, 0.045, 0.13)
+			return {"floor": Color(0.075, 0.025, 0.11), "accent": Color(0.90, 0.22, 1.0)}
+		_:
+			return {"floor": Color(0.045, 0.055, 0.08), "accent": Color(0.30, 0.58, 0.92)}
 
-	draw_rect(Rect2(0, 0, 960, 540), floor_color, true)
-	for x in range(64, 960, 64):
-		draw_line(Vector2(x, 0), Vector2(x, 540), floor_color.lightened(0.09), 1.0)
-	for y in range(64, 540, 64):
-		draw_line(Vector2(0, y), Vector2(960, y), floor_color.lightened(0.09), 1.0)
-	draw_rect(Rect2(24, 24, 912, 492), floor_color.lightened(0.35), false, 3.0)
+func _draw() -> void:
+	var kind := StringName(room_data.get("kind", &"combat"))
+	var palette := _palette_for_kind(kind)
+	var floor: Color = palette["floor"]
+	var accent: Color = palette["accent"]
+
+	draw_rect(Rect2(0, 0, 960, 540), floor.darkened(0.36), true)
+	draw_rect(Rect2(24, 24, 912, 492), floor, true)
+
+	for x in range(48, 936, 48):
+		draw_line(Vector2(x, 24), Vector2(x, 516), Color(accent, 0.045), 1.0)
+	for y in range(48, 516, 48):
+		draw_line(Vector2(24, y), Vector2(936, y), Color(accent, 0.045), 1.0)
+
+	for index in range(_decor_points.size()):
+		var point := _decor_points[index]
+		var radius := 3.0 + float(index % 3)
+		draw_circle(point, radius + 2.0, Color(0.0, 0.0, 0.0, 0.20))
+		draw_circle(point, radius, Color(accent, 0.13))
+		if index % 4 == 0:
+			draw_line(point + Vector2(-9, 5), point + Vector2(8, -4), Color(accent, 0.12), 2.0)
+			draw_line(point + Vector2(8, -4), point + Vector2(13, 3), Color(accent, 0.08), 1.0)
+
+	var doors_data: Dictionary = room_data.get("doors", {})
+	if doors_data.has(&"north"):
+		draw_rect(Rect2(444, 24, 72, 72), Color(accent, 0.08), true)
+	if doors_data.has(&"south"):
+		draw_rect(Rect2(444, 444, 72, 72), Color(accent, 0.08), true)
+	if doors_data.has(&"west"):
+		draw_rect(Rect2(24, 234, 72, 72), Color(accent, 0.08), true)
+	if doors_data.has(&"east"):
+		draw_rect(Rect2(864, 234, 72, 72), Color(accent, 0.08), true)
+
+	draw_rect(Rect2(24, 24, 912, 492), Color(accent, 0.58), false, 3.0)
+	draw_rect(Rect2(31, 31, 898, 478), Color(accent, 0.11), false, 1.0)
+
+	for corner in [
+		Vector2(48, 48),
+		Vector2(912, 48),
+		Vector2(48, 492),
+		Vector2(912, 492),
+	]:
+		draw_circle(corner, 8.0, Color(accent, 0.26))
+		draw_arc(corner, 14.0, 0.0, TAU, 16, Color(accent, 0.30), 2.0)
 
 	var label := String(kind).to_upper()
 	var font := ThemeDB.fallback_font
-	draw_string(font, Vector2(420, 62), label, HORIZONTAL_ALIGNMENT_CENTER, 120, 18, Color(1, 1, 1, 0.34))
+	draw_string(
+		font,
+		Vector2(420, 62),
+		label,
+		HORIZONTAL_ALIGNMENT_CENTER,
+		120,
+		17,
+		Color(accent, 0.58)
+	)

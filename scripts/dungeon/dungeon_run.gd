@@ -27,6 +27,7 @@ const OPPOSITE_SLOT := {
 @onready var status_label: Label = $UI/Status
 @onready var build_label: Label = $UI/Build
 @onready var profile_label: Label = $UI/Profile
+@onready var toast_label: Label = $UI/Toast
 @onready var boss_name_label: Label = $UI/BossName
 @onready var boss_health_bar: ProgressBar = $UI/BossHealth
 @onready var victory_label: Label = $UI/Victory
@@ -43,6 +44,7 @@ var _victory := false
 var _game_over := false
 var _run_finalized := false
 var _end_unlock_message := ""
+var _toast_time_left := 0.0
 
 var _run_build := RunBuild.new()
 var _reward_director := RewardDirector.new()
@@ -58,8 +60,9 @@ func _ready() -> void:
 	else:
 		_restore_run(snapshot)
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	_update_boss_hud()
+	_update_toast(delta)
 
 	if _game_over:
 		game_over_label.visible = true
@@ -126,6 +129,7 @@ func _restore_run(snapshot: Dictionary) -> void:
 		player.position = Vector2(float(raw_position[0]), float(raw_position[1]))
 
 	_update_all_hud()
+	_show_toast("RUN RESTAURADA", 1.8)
 
 func _attach_build(build: RunBuild) -> void:
 	if build.changed.is_connected(_on_build_changed):
@@ -270,6 +274,7 @@ func _room_seed(room_id: int, salt: int) -> int:
 
 func _on_choice_selected(option: Dictionary) -> void:
 	var kind := StringName(option.get("kind", &""))
+	var feedback := String(option.get("name", option.get("title", "Recompensa")))
 	match kind:
 		&"weapon":
 			var weapon := option.get("resource") as WeaponDefinition
@@ -281,6 +286,7 @@ func _on_choice_selected(option: Dictionary) -> void:
 				player.add_modifier(modifier)
 		&"effect":
 			_apply_effect(option)
+	_show_toast(feedback, 2.0)
 
 func _apply_effect(option: Dictionary) -> void:
 	var effect := StringName(option.get("effect", &""))
@@ -306,13 +312,18 @@ func _award_room_essence(room_id: int) -> void:
 	var room: Dictionary = _layout["rooms"][room_id]
 	var kind := StringName(room["kind"])
 	var depth := int(room["depth"])
+	var amount := 0
 	match kind:
 		RoomGraphGenerator.KIND_COMBAT:
-			_run_build.add_essence(4 + depth)
+			amount = 4 + depth
 		RoomGraphGenerator.KIND_MINIBOSS:
-			_run_build.add_essence(18)
+			amount = 18
 		RoomGraphGenerator.KIND_BOSS:
-			_run_build.add_essence(40)
+			amount = 40
+
+	if amount > 0:
+		_run_build.add_essence(amount)
+		_show_toast("+%d ESENCIA" % amount, 1.5)
 
 func _on_build_changed() -> void:
 	_update_build_hud()
@@ -450,6 +461,22 @@ func _array_to_set(source) -> Dictionary:
 	for raw_value in source:
 		result[int(raw_value)] = true
 	return result
+
+func _show_toast(message: String, duration: float = 1.6) -> void:
+	if not is_node_ready() or message.is_empty():
+		return
+	toast_label.text = message
+	toast_label.visible = true
+	toast_label.modulate = Color.WHITE
+	_toast_time_left = maxf(0.1, duration)
+
+func _update_toast(delta: float) -> void:
+	if _toast_time_left <= 0.0:
+		toast_label.visible = false
+		return
+	_toast_time_left = maxf(0.0, _toast_time_left - delta)
+	var alpha := clampf(_toast_time_left * 2.0, 0.0, 1.0)
+	toast_label.modulate = Color(1.0, 1.0, 1.0, alpha)
 
 func _clear_transient_projectiles() -> void:
 	for node in get_tree().get_nodes_in_group("transient_projectile"):

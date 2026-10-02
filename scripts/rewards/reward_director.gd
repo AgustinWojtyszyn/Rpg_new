@@ -37,7 +37,13 @@ func build_treasure_options(
 			options.append(_modifier_option(modifier))
 			modifier_pool.erase(modifier)
 		else:
-			break
+			var essence_amount := 18 + rng.randi_range(0, 10) + options.size() * 2
+			options.append(_effect_option(
+				"Cache de esencia",
+				"+%d esencia." % essence_amount,
+				&"essence",
+				{"amount": essence_amount}
+			))
 
 	return options
 

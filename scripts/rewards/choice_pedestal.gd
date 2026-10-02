@@ -60,14 +60,23 @@ func _draw() -> void:
 	if not _enabled:
 		accent = Color(0.30, 0.32, 0.36)
 
-	draw_rect(Rect2(-52, -18, 104, 36), Color(0.08, 0.10, 0.14, 0.92), true)
-	draw_rect(Rect2(-52, -18, 104, 36), accent, false, 3.0)
-	draw_circle(Vector2(0, -28), 16.0, accent)
+	draw_ellipse_shadow()
+	draw_rect(Rect2(-44, -4, 88, 22), Color(0.07, 0.08, 0.12, 0.96), true)
+	draw_rect(Rect2(-36, -16, 72, 16), accent.darkened(0.55), true)
+	draw_rect(Rect2(-28, -28, 56, 14), accent.darkened(0.35), true)
+	draw_circle(Vector2(0, -49), 20.0, Color(accent, 0.16))
+	draw_arc(Vector2(0, -49), 20.0, 0.0, TAU, 28, accent, 3.0)
+	draw_circle(Vector2(0, -49), 8.0, accent.lightened(0.18))
 
 	var font := ThemeDB.fallback_font
 	var title := String(option.get("title", "Elección"))
 	var description := String(option.get("description", ""))
-	draw_string(font, Vector2(-86, 42), title, HORIZONTAL_ALIGNMENT_CENTER, 172, 15, Color.WHITE)
-	draw_multiline_string(font, Vector2(-100, 64), description, HORIZONTAL_ALIGNMENT_CENTER, 200, 13, 32, Color(0.82, 0.86, 0.92))
+	draw_string(font, Vector2(-92, 43), title, HORIZONTAL_ALIGNMENT_CENTER, 184, 15, Color.WHITE)
+	draw_multiline_string(font, Vector2(-104, 65), description, HORIZONTAL_ALIGNMENT_CENTER, 208, 13, 34, Color(0.82, 0.86, 0.92))
 	if _player != null and _enabled:
-		draw_string(font, Vector2(-26, -54), "USE", HORIZONTAL_ALIGNMENT_CENTER, 52, 14, accent)
+		draw_string(font, Vector2(-30, -80), "USE", HORIZONTAL_ALIGNMENT_CENTER, 60, 14, accent)
+
+func draw_ellipse_shadow() -> void:
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 0.42))
+	draw_circle(Vector2(0, 48), 36.0, Color(0.0, 0.0, 0.0, 0.24))
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
