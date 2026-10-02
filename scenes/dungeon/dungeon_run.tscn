@@ -26,6 +26,26 @@ text = "RUN"
 theme_override_colors/font_color = Color(0.90, 0.94, 1, 1)
 theme_override_font_sizes/font_size = 18
 
+[node name="BossName" type="Label" parent="UI"]
+visible = false
+offset_left = 320.0
+offset_top = 18.0
+offset_right = 640.0
+offset_bottom = 46.0
+text = "BOSS"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 0.82, 0.42, 1)
+theme_override_font_sizes/font_size = 17
+
+[node name="BossHealth" type="ProgressBar" parent="UI"]
+visible = false
+offset_left = 320.0
+offset_top = 48.0
+offset_right = 640.0
+offset_bottom = 66.0
+value = 100.0
+show_percentage = false
+
 [node name="Victory" type="Label" parent="UI"]
 visible = false
 offset_left = 235.0

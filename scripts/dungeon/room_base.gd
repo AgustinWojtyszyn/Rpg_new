@@ -46,6 +46,9 @@ func spawn_position_for_entry(entry_slot: StringName) -> Vector2:
 		return ENTRY_POSITIONS[entry_slot]
 	return Vector2(480, 270)
 
+func get_boss() -> BossBase:
+	return null
+
 func _build_doors() -> void:
 	var doors_data: Dictionary = room_data.get("doors", {})
 	for slot_variant in doors_data:

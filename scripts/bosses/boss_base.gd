@@ -4,6 +4,7 @@ extends CharacterBody2D
 signal phase_changed(phase: int)
 signal boss_died
 
+@export var display_name: String = "BOSS"
 @export_range(1.0, 100000.0, 1.0) var max_health: float = 800.0
 @export var phase_thresholds := PackedFloat32Array([0.70, 0.35])
 

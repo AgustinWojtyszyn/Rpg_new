@@ -7,7 +7,7 @@ const POCKET_ARENA_SCENE := preload("res://scenes/bosses/pocket_arena.tscn")
 
 @onready var arena_stack: ArenaStack = $ArenaStack
 @onready var base_arena: Node2D = $ArenaStack/BaseArena
-@onready var boss = $ArenaStack/BaseArena/RiftWarden
+@onready var boss: BossBase = $ArenaStack/BaseArena/RiftWarden
 
 var _encounter_rng := RandomNumberGenerator.new()
 var _return_position := Vector2.ZERO
@@ -30,6 +30,9 @@ func setup(
 	boss.configure_target(player)
 	boss.dimension_cast_requested.connect(_on_dimension_cast_requested)
 	boss.boss_died.connect(_on_boss_died)
+
+func get_boss() -> BossBase:
+	return boss if is_instance_valid(boss) and not boss.is_queued_for_deletion() else null
 
 func _on_dimension_cast_requested(theme: StringName, budget: int) -> void:
 	if _inside_pocket or not is_instance_valid(boss):

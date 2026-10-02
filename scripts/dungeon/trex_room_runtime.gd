@@ -16,6 +16,9 @@ func setup(data: Dictionary, run_player: PlayerCharacter, already_cleared: bool)
 	boss.configure_target(player)
 	boss.boss_died.connect(_on_boss_died)
 
+func get_boss() -> BossBase:
+	return boss if is_instance_valid(boss) and not boss.is_queued_for_deletion() else null
+
 func _on_boss_died() -> void:
 	mark_cleared()
 	miniboss_defeated.emit()

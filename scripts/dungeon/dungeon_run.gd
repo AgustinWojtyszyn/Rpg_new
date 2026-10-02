@@ -24,6 +24,8 @@ const OPPOSITE_SLOT := {
 @onready var room_layer: Node2D = $RoomLayer
 @onready var player: PlayerCharacter = $PlayerLayer/Player
 @onready var status_label: Label = $UI/Status
+@onready var boss_name_label: Label = $UI/BossName
+@onready var boss_health_bar: ProgressBar = $UI/BossHealth
 @onready var victory_label: Label = $UI/Victory
 @onready var game_over_label: Label = $UI/GameOver
 @onready var mobile_controls: MobileControls = $MobileControls
@@ -42,6 +44,8 @@ func _ready() -> void:
 	_enter_room(int(_layout["start_id"]), &"")
 
 func _process(_delta: float) -> void:
+	_update_boss_hud()
+
 	if _game_over:
 		game_over_label.visible = true
 		victory_label.visible = false
@@ -136,6 +140,23 @@ func _enemy_pool_for_depth(depth: int) -> Array[EnemyDefinition]:
 
 func _room_seed(room_id: int) -> int:
 	return run_seed ^ ((room_id + 1) * 130363)
+
+func _update_boss_hud() -> void:
+	if not is_instance_valid(_current_room):
+		boss_name_label.visible = false
+		boss_health_bar.visible = false
+		return
+
+	var boss := _current_room.get_boss()
+	if boss == null:
+		boss_name_label.visible = false
+		boss_health_bar.visible = false
+		return
+
+	boss_name_label.visible = true
+	boss_health_bar.visible = true
+	boss_name_label.text = boss.display_name
+	boss_health_bar.value = boss.get_health_ratio() * 100.0
 
 func _on_room_cleared() -> void:
 	_cleared_rooms[_current_room_id] = true
