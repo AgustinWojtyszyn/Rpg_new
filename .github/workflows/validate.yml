@@ -5,9 +5,14 @@ on:
     branches: [main]
   pull_request:
 
+concurrency:
+  group: godot-validate-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,28 +28,54 @@ jobs:
         run: ./godot --headless --path . --editor --quit
 
       - name: Run deterministic core tests
-        run: ./godot --headless --path . --script res://tests/run_all.gd
+        timeout-minutes: 3
+        run: |
+          set +e
+          timeout 120s ./godot --headless --path . --script res://tests/run_all.gd --quit-after 300 --log-file ci-tests.log
+          code=$?
+          set -e
+          cat ci-tests.log
+
+          if [ "$code" -eq 124 ]; then
+            echo "Test harness timed out."
+            exit 1
+          fi
+          if [ "$code" -ne 0 ]; then
+            echo "Godot test process exited with code $code."
+            exit "$code"
+          fi
+          if grep -E "SCRIPT ERROR|Parse Error" ci-tests.log; then
+            echo "Godot reported a script/parse error."
+            exit 1
+          fi
+          if ! grep -q "ALL TESTS PASSED" ci-tests.log; then
+            echo "Test harness did not report ALL TESTS PASSED."
+            exit 1
+          fi
 
       - name: Boot dungeon run
+        timeout-minutes: 2
         run: |
-          ./godot --headless --path . --scene res://scenes/dungeon/dungeon_run.tscn --quit-after 180 --log-file ci-dungeon.log
+          timeout 90s ./godot --headless --path . --scene res://scenes/dungeon/dungeon_run.tscn --quit-after 180 --log-file ci-dungeon.log
+          cat ci-dungeon.log
           if grep -E "SCRIPT ERROR|Parse Error" ci-dungeon.log; then
-            cat ci-dungeon.log
             exit 1
           fi
 
       - name: Boot T-Rex encounter
+        timeout-minutes: 2
         run: |
-          ./godot --headless --path . --scene res://scenes/bosses/trex_arena.tscn --quit-after 180 --log-file ci-trex.log
+          timeout 90s ./godot --headless --path . --scene res://scenes/bosses/trex_arena.tscn --quit-after 180 --log-file ci-trex.log
+          cat ci-trex.log
           if grep -E "SCRIPT ERROR|Parse Error" ci-trex.log; then
-            cat ci-trex.log
             exit 1
           fi
 
       - name: Boot dimensional boss encounter
+        timeout-minutes: 2
         run: |
-          ./godot --headless --path . --scene res://scenes/bosses/dimensional_boss_encounter.tscn --quit-after 180 --log-file ci-rift.log
+          timeout 90s ./godot --headless --path . --scene res://scenes/bosses/dimensional_boss_encounter.tscn --quit-after 180 --log-file ci-rift.log
+          cat ci-rift.log
           if grep -E "SCRIPT ERROR|Parse Error" ci-rift.log; then
-            cat ci-rift.log
             exit 1
           fi
