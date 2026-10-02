@@ -26,6 +26,7 @@ const OPPOSITE_SLOT := {
 @onready var player: PlayerCharacter = $PlayerLayer/Player
 @onready var status_label: Label = $UI/Status
 @onready var build_label: Label = $UI/Build
+@onready var player_health_bar: ProgressBar = $UI/PlayerHealth
 @onready var profile_label: Label = $UI/Profile
 @onready var toast_label: Label = $UI/Toast
 @onready var boss_name_label: Label = $UI/BossName
@@ -62,6 +63,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_update_boss_hud()
+	_update_player_health_hud()
 	_update_toast(delta)
 
 	if _game_over:
@@ -343,6 +345,12 @@ func _update_build_hud() -> void:
 		_run_build.modifiers.size(),
 		_run_build.essence,
 	]
+
+func _update_player_health_hud() -> void:
+	if not is_node_ready():
+		return
+	player_health_bar.max_value = player.health.max_health
+	player_health_bar.value = player.health.current_health
 
 func _update_profile_hud() -> void:
 	if not is_node_ready() or _profile == null:
