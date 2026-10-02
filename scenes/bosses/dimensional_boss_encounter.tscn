@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/bosses/dimensional_boss_encounter.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/arenas/arena_stack.gd" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/bosses/rift_warden.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/ui/mobile_controls.tscn" id="5"]
 
 [node name="DimensionalBossEncounter" type="Node2D"]
 script = ExtResource("1")
@@ -37,6 +38,8 @@ offset_left = 18.0
 offset_top = 494.0
 offset_right = 920.0
 offset_bottom = 532.0
-text = "Arrows move · Shift dash · Enter/Space shoot · B vuelve"
+text = "Arrows move · Shift dash · Space/Enter shoot · B returns"
 theme_override_colors/font_color = Color(0.82, 0.86, 0.94, 1)
 theme_override_font_sizes/font_size = 16
+
+[node name="MobileControls" parent="." instance=ExtResource("5")]

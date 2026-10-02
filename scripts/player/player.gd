@@ -16,22 +16,10 @@ var _external_velocity := Vector2.ZERO
 var _dash_direction := Vector2.RIGHT
 var _dash_time_left := 0.0
 var _dash_cooldown_left := 0.0
-var _dash_requested := false
 
 func _ready() -> void:
 	health.died.connect(_on_died)
 	queue_redraw()
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event is not InputEventKey:
-		return
-	var key_event := event as InputEventKey
-	if not key_event.pressed or key_event.echo:
-		return
-	if key_event.physical_keycode == KEY_SHIFT:
-		_dash_requested = true
-	elif key_event.physical_keycode == KEY_E:
-		interact_requested.emit()
 
 func _physics_process(delta: float) -> void:
 	_dash_cooldown_left = maxf(0.0, _dash_cooldown_left - delta)
@@ -41,11 +29,13 @@ func _physics_process(delta: float) -> void:
 	if input_vector != Vector2.ZERO:
 		last_aim_direction = input_vector.normalized()
 
-	if _dash_requested and _dash_cooldown_left <= 0.0:
+	if Input.is_action_just_pressed("dash") and _dash_cooldown_left <= 0.0:
 		_dash_direction = input_vector.normalized() if input_vector != Vector2.ZERO else last_aim_direction
 		_dash_time_left = dash_duration
 		_dash_cooldown_left = dash_cooldown
-	_dash_requested = false
+
+	if Input.is_action_just_pressed("interact"):
+		interact_requested.emit()
 
 	if _dash_time_left > 0.0:
 		velocity = _dash_direction * dash_speed + _external_velocity * 0.25
@@ -55,7 +45,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	_external_velocity = _external_velocity.move_toward(Vector2.ZERO, 900.0 * delta)
 
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("attack"):
 		_fire()
 
 	global_position.x = clampf(global_position.x, 20.0, 940.0)
