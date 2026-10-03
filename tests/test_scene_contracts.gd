@@ -2,6 +2,7 @@ extends RefCounted
 
 const PLAYER_SCENE := preload("res://scenes/player/player.tscn")
 const MOBILE_CONTROLS_SCENE := preload("res://scenes/ui/mobile_controls.tscn")
+const MAIN_MENU_SCENE := preload("res://scenes/ui/main_menu.tscn")
 const DUNGEON_RUN_SCENE := preload("res://scenes/dungeon/dungeon_run.tscn")
 const TREX_ROOM_SCENE := preload("res://scenes/dungeon/trex_room_runtime.tscn")
 const RIFT_ROOM_SCENE := preload("res://scenes/dungeon/rift_room_runtime.tscn")
@@ -28,8 +29,8 @@ func _validate_input_contracts(failures: Array[String]) -> void:
 			failures.append("Missing InputMap action: %s" % String(action))
 
 	var main_scene := String(ProjectSettings.get_setting("application/run/main_scene", ""))
-	if main_scene != "res://scenes/dungeon/dungeon_run.tscn":
-		failures.append("Dungeon run must remain the startup scene.")
+	if main_scene != "res://scenes/ui/main_menu.tscn":
+		failures.append("Main menu must be the startup scene.")
 
 	var orientation := int(ProjectSettings.get_setting("display/window/handheld/orientation", -1))
 	if orientation != 0:
@@ -98,6 +99,15 @@ func _validate_boss_contracts(failures: Array[String]) -> void:
 		wall.free()
 
 func _validate_run_scene_contracts(failures: Array[String]) -> void:
+	var main_menu := MAIN_MENU_SCENE.instantiate()
+	if main_menu == null:
+		failures.append("Main menu scene failed to instantiate.")
+	else:
+		for path in ["MenuPanel/VBox/Play", "MenuPanel/VBox/NewRun", "MenuPanel/VBox/Controls", "MenuPanel/VBox/Quit"]:
+			if main_menu.get_node_or_null(path) == null:
+				failures.append("Main menu missing required node: %s" % path)
+		main_menu.free()
+
 	var run_scene := DUNGEON_RUN_SCENE.instantiate()
 	var trex_room := TREX_ROOM_SCENE.instantiate()
 	var rift_room := RIFT_ROOM_SCENE.instantiate()
