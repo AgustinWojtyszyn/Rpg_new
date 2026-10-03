@@ -1,0 +1,138 @@
+{
+  "family": "08_frozen_caverns",
+  "pixellab_id": "d091b5f7-3b72-4a01-a9d4-04adfaa9f628",
+  "tool": "create_building_kit",
+  "params": {
+    "tile_type": "square_topdown",
+    "tile_size": 32,
+    "wall_tiles": 2,
+    "tile_view_angle": 72,
+    "wall_angle": 40,
+    "outline_mode": "outline",
+    "layout": "grid"
+  },
+  "piece_count": 58,
+  "piece_size_px": [
+    52,
+    87
+  ],
+  "indices": "0..57",
+  "naming": "prefix_<index>.png",
+  "selected_version": "v1",
+  "discarded_candidates": [],
+  "selection_note": "Aceptada sin regeneracion.",
+  "placement_rules": {
+    "floor": {
+      "0": "floor"
+    },
+    "sides": {
+      "1": "N",
+      "2": "E",
+      "3": "S",
+      "4": "W"
+    },
+    "corners": {
+      "5": "NE",
+      "6": "SE",
+      "7": "SW",
+      "8": "NW"
+    },
+    "outer_corners": {
+      "9": "NE",
+      "10": "SE",
+      "11": "SW",
+      "12": "NW"
+    },
+    "partition": {
+      "13": "hub",
+      "14": "N",
+      "15": "E",
+      "16": "S",
+      "17": "W"
+    },
+    "partition_wall": {
+      "18": "N",
+      "19": "E",
+      "20": "S",
+      "21": "W"
+    },
+    "partition_multi": {
+      "22": "NE",
+      "23": "NW",
+      "24": "ES",
+      "25": "SW",
+      "26": "NES",
+      "27": "NSW",
+      "28": "NEW",
+      "29": "ESW",
+      "30": "NESW"
+    },
+    "pillar": {
+      "31": "pillar"
+    },
+    "doors": {
+      "32": "Na",
+      "33": "Nb",
+      "34": "Ea",
+      "35": "Eb",
+      "36": "Sa",
+      "37": "Sb",
+      "38": "Wa",
+      "39": "Wb"
+    },
+    "stairs": {
+      "40": "stairs",
+      "41": "stairs_alt",
+      "42": "stairs_east",
+      "43": "stairs_east_alt"
+    },
+    "floor_roof": {
+      "44": "floor_roof"
+    },
+    "partition_doors": {
+      "45": "Va",
+      "46": "Vb",
+      "47": "Ha",
+      "48": "Hb"
+    },
+    "outer_multi": {
+      "49": "NES",
+      "50": "NEW",
+      "51": "NSW",
+      "52": "ESW",
+      "53": "NESW",
+      "54": "NS",
+      "55": "EW"
+    }
+  },
+  "materials_prompt": "wall=Frozen cavern walls of dark wet rock encrusted with ice, translucent icicles along the rim, frost blooms, pale blue crystal clusters and packed snow on the top surfaces. Top-down 2.5D: wall top surfaces plus tall vertical front faces with strong contact shadows. Consistent upper-left lighting, AO at wall-floor junctions, chunky readable pixel shapes, cohesive deep slate blue rock with icy cyan and white highlights, commercial game quality. floor=Cavern floor of cracked frozen stone with glazed ice patches, packed snow drifts and fine frost veins. Relatively clean and readable walkable center with detail concentrated at edges. Modern handcrafted pixel art, consistent pixel density, restrained texture noise, cohesive deep slate blue with icy cyan and white highlights.",
+  "painted_indices": [
+    0,
+    1,
+    4,
+    8,
+    14,
+    17,
+    31,
+    32,
+    33,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+  ],
+  "repair": {
+    "status": "not_required",
+    "tool": "pixelart_workbench (free, 0 generations)",
+    "note": "Aun NO aplicada. repair() devolvio 0 cambios en la pieza 7/5; se requiere map_colors guardado pieza por pieza."
+  },
+  "pending_blemishes": [],
+  "integrated_into_game": false
+}

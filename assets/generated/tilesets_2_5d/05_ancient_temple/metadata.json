@@ -1,0 +1,163 @@
+{
+  "family": "05_ancient_temple",
+  "pixellab_id": "a1ea86e6-fba5-425b-a05b-0de3cdd4f218",
+  "tool": "create_building_kit",
+  "params": {
+    "tile_type": "square_topdown",
+    "tile_size": 32,
+    "wall_tiles": 2,
+    "tile_view_angle": 72,
+    "wall_angle": 40,
+    "outline_mode": "outline",
+    "layout": "grid"
+  },
+  "piece_count": 58,
+  "piece_size_px": [
+    52,
+    87
+  ],
+  "indices": "0..57",
+  "naming": "prefix_<index>.png",
+  "selected_version": "v2",
+  "discarded_candidates": [
+    "b9d04bbf-1de5-49ef-a477-2a62ab3a9189 (v1, descartada: suelo medaleta verde)"
+  ],
+  "selection_note": "2a pasada autorizada: suelo corregido a arenisca ocre; v1 descartada y NO incluida.",
+  "placement_rules": {
+    "floor": {
+      "0": "floor"
+    },
+    "sides": {
+      "1": "N",
+      "2": "E",
+      "3": "S",
+      "4": "W"
+    },
+    "corners": {
+      "5": "NE",
+      "6": "SE",
+      "7": "SW",
+      "8": "NW"
+    },
+    "outer_corners": {
+      "9": "NE",
+      "10": "SE",
+      "11": "SW",
+      "12": "NW"
+    },
+    "partition": {
+      "13": "hub",
+      "14": "N",
+      "15": "E",
+      "16": "S",
+      "17": "W"
+    },
+    "partition_wall": {
+      "18": "N",
+      "19": "E",
+      "20": "S",
+      "21": "W"
+    },
+    "partition_multi": {
+      "22": "NE",
+      "23": "NW",
+      "24": "ES",
+      "25": "SW",
+      "26": "NES",
+      "27": "NSW",
+      "28": "NEW",
+      "29": "ESW",
+      "30": "NESW"
+    },
+    "pillar": {
+      "31": "pillar"
+    },
+    "doors": {
+      "32": "Na",
+      "33": "Nb",
+      "34": "Ea",
+      "35": "Eb",
+      "36": "Sa",
+      "37": "Sb",
+      "38": "Wa",
+      "39": "Wb"
+    },
+    "stairs": {
+      "40": "stairs",
+      "41": "stairs_alt",
+      "42": "stairs_east",
+      "43": "stairs_east_alt"
+    },
+    "floor_roof": {
+      "44": "floor_roof"
+    },
+    "partition_doors": {
+      "45": "Va",
+      "46": "Vb",
+      "47": "Ha",
+      "48": "Hb"
+    },
+    "outer_multi": {
+      "49": "NES",
+      "50": "NEW",
+      "51": "NSW",
+      "52": "ESW",
+      "53": "NESW",
+      "54": "NS",
+      "55": "EW"
+    }
+  },
+  "materials_prompt": "wall=Ancestral temple walls of massive carved sandstone and granite blocks with deep mortar joints, carved friezes and glyphs, chiseled reliefs, statues in niches, sturdy columns and a carved archway. Top-down 2.5D: wall top surfaces plus tall vertical front faces with strong contact shadows. Consistent upper-left lighting, AO at wall-floor junctions, chunky readable pixel shapes, cohesive warm sandstone ochre and grey-brown with subtle teal patina, commercial game quality. floor=Temple floor of large warm sandstone slabs in ochre and grey-brown with faint carved border lines and lightly worn glyph marks only near the edges. Plain, clean and uncluttered in the walkable center. Absolutely no green, no teal and no central medallion. Modern handcrafted pixel art, consistent pixel density, restrained texture noise, cohesive warm sandstone ochre and grey-brown.",
+  "painted_indices": [
+    0,
+    1,
+    4,
+    8,
+    14,
+    17,
+    31,
+    32,
+    33,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+  ],
+  "repair": {
+    "status": "applied",
+    "tool": "pixelart_workbench edit --changes map_colors (free, 0 generations) — colores espurios mapeados al color material adyacente dominante, por region delimitada",
+    "applied_on": "2026-10-03",
+    "repaired_pieces": [
+      45,
+      47,
+      48,
+      56
+    ],
+    "pixels_changed": {
+      "45": 48,
+      "47": 6,
+      "48": 29,
+      "56": 24
+    },
+    "kept_original": {
+      "44": "sin pixels candidatos: no habia destello que corregir"
+    },
+    "generations_consumed": 0,
+    "out_of_scope_not_touched": [
+      "piezas 40, 42, 43: lineas claras en y=59 (escaleras) — fuera del alcance documentado",
+      "piezas 33,34,35,37,38,39: elementos blancos en puertas — pueden ser diseno legitimo"
+    ]
+  },
+  "pending_blemishes": [
+    "piezas 40, 42, 43: lineas claras en y=59 (escaleras) — fuera del alcance documentado",
+    "piezas 33,34,35,37,38,39: elementos blancos en puertas — pueden ser diseno legitimo"
+  ],
+  "integrated_into_game": false
+}

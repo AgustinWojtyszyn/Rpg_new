@@ -1,0 +1,156 @@
+{
+  "family": "07_volcanic_forge",
+  "pixellab_id": "9d3d5d13-59e0-4a48-99a5-ace568eb3017",
+  "tool": "create_building_kit",
+  "params": {
+    "tile_type": "square_topdown",
+    "tile_size": 32,
+    "wall_tiles": 2,
+    "tile_view_angle": 72,
+    "wall_angle": 40,
+    "outline_mode": "outline",
+    "layout": "grid"
+  },
+  "piece_count": 58,
+  "piece_size_px": [
+    52,
+    87
+  ],
+  "indices": "0..57",
+  "naming": "prefix_<index>.png",
+  "selected_version": "v1",
+  "discarded_candidates": [],
+  "selection_note": "Conservada por defecto; ver pending_blemishes.",
+  "placement_rules": {
+    "floor": {
+      "0": "floor"
+    },
+    "sides": {
+      "1": "N",
+      "2": "E",
+      "3": "S",
+      "4": "W"
+    },
+    "corners": {
+      "5": "NE",
+      "6": "SE",
+      "7": "SW",
+      "8": "NW"
+    },
+    "outer_corners": {
+      "9": "NE",
+      "10": "SE",
+      "11": "SW",
+      "12": "NW"
+    },
+    "partition": {
+      "13": "hub",
+      "14": "N",
+      "15": "E",
+      "16": "S",
+      "17": "W"
+    },
+    "partition_wall": {
+      "18": "N",
+      "19": "E",
+      "20": "S",
+      "21": "W"
+    },
+    "partition_multi": {
+      "22": "NE",
+      "23": "NW",
+      "24": "ES",
+      "25": "SW",
+      "26": "NES",
+      "27": "NSW",
+      "28": "NEW",
+      "29": "ESW",
+      "30": "NESW"
+    },
+    "pillar": {
+      "31": "pillar"
+    },
+    "doors": {
+      "32": "Na",
+      "33": "Nb",
+      "34": "Ea",
+      "35": "Eb",
+      "36": "Sa",
+      "37": "Sb",
+      "38": "Wa",
+      "39": "Wb"
+    },
+    "stairs": {
+      "40": "stairs",
+      "41": "stairs_alt",
+      "42": "stairs_east",
+      "43": "stairs_east_alt"
+    },
+    "floor_roof": {
+      "44": "floor_roof"
+    },
+    "partition_doors": {
+      "45": "Va",
+      "46": "Vb",
+      "47": "Ha",
+      "48": "Hb"
+    },
+    "outer_multi": {
+      "49": "NES",
+      "50": "NEW",
+      "51": "NSW",
+      "52": "ESW",
+      "53": "NESW",
+      "54": "NS",
+      "55": "EW"
+    }
+  },
+  "materials_prompt": "wall=Volcanic forge walls of dark basalt rock fused with blackened iron plating, riveted seams, hanging chains, furnace vents glowing warm orange, soot streaks and slag drips. Top-down 2.5D: wall top surfaces plus tall vertical front faces with strong contact shadows. Consistent upper-left lighting, AO at wall-floor junctions, chunky readable pixel shapes, cohesive near-black basalt and gunmetal with ember orange and lava-red glow, commercial game quality. floor=Forge floor of dark basalt slabs and iron grating above faintly glowing seams, heat-scorched stone and sparse ash, glow concentrated at edges. Relatively clean and readable walkable center with detail concentrated at edges. Modern handcrafted pixel art, consistent pixel density, restrained texture noise, cohesive near-black basalt and gunmetal with ember orange accents.",
+  "painted_indices": [
+    0,
+    1,
+    4,
+    8,
+    14,
+    17,
+    31,
+    32,
+    33,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+  ],
+  "repair": {
+    "status": "applied",
+    "tool": "pixelart_workbench edit --changes map_colors (free, 0 generations) — barra blanca solida + franja de borde + punto, reconstruidos con basalto adyacente (#211a1c / #0b080b / #484649)",
+    "applied_on": "2026-10-03",
+    "repaired_pieces": [
+      5,
+      8,
+      13
+    ],
+    "pixels_changed": {
+      "5": 32,
+      "8": 32,
+      "13": 32
+    },
+    "kept_original": {},
+    "generations_consumed": 0,
+    "regions_per_piece": "A cara frontal 24px, B cantidad superior 6px, C cantidad derecha 2px",
+    "out_of_scope_not_touched": [
+      "pequenos pixels claros en piezas 6,7 y otras esquinas — fuera del alcance documentado"
+    ]
+  },
+  "pending_blemishes": [
+    "pequenos pixels claros en piezas 6,7 y otras esquinas — fuera del alcance documentado"
+  ],
+  "integrated_into_game": false
+}

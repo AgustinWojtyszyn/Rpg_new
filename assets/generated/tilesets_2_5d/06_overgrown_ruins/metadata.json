@@ -1,0 +1,172 @@
+{
+  "family": "06_overgrown_ruins",
+  "pixellab_id": "471d8fbd-8ad3-4824-90c6-8681a972a087",
+  "tool": "create_building_kit",
+  "params": {
+    "tile_type": "square_topdown",
+    "tile_size": 32,
+    "wall_tiles": 2,
+    "tile_view_angle": 72,
+    "wall_angle": 40,
+    "outline_mode": "outline",
+    "layout": "grid"
+  },
+  "piece_count": 58,
+  "piece_size_px": [
+    52,
+    87
+  ],
+  "indices": "0..57",
+  "naming": "prefix_<index>.png",
+  "selected_version": "v2",
+  "discarded_candidates": [
+    "47933e67-25aa-457c-b372-818d528a235e (v1, descartada: caras frontales planas)"
+  ],
+  "selection_note": "2a pasada autorizada: volumen 2.5D reforzado; v1 descartada y NO incluida.",
+  "placement_rules": {
+    "floor": {
+      "0": "floor"
+    },
+    "sides": {
+      "1": "N",
+      "2": "E",
+      "3": "S",
+      "4": "W"
+    },
+    "corners": {
+      "5": "NE",
+      "6": "SE",
+      "7": "SW",
+      "8": "NW"
+    },
+    "outer_corners": {
+      "9": "NE",
+      "10": "SE",
+      "11": "SW",
+      "12": "NW"
+    },
+    "partition": {
+      "13": "hub",
+      "14": "N",
+      "15": "E",
+      "16": "S",
+      "17": "W"
+    },
+    "partition_wall": {
+      "18": "N",
+      "19": "E",
+      "20": "S",
+      "21": "W"
+    },
+    "partition_multi": {
+      "22": "NE",
+      "23": "NW",
+      "24": "ES",
+      "25": "SW",
+      "26": "NES",
+      "27": "NSW",
+      "28": "NEW",
+      "29": "ESW",
+      "30": "NESW"
+    },
+    "pillar": {
+      "31": "pillar"
+    },
+    "doors": {
+      "32": "Na",
+      "33": "Nb",
+      "34": "Ea",
+      "35": "Eb",
+      "36": "Sa",
+      "37": "Sb",
+      "38": "Wa",
+      "39": "Wb"
+    },
+    "stairs": {
+      "40": "stairs",
+      "41": "stairs_alt",
+      "42": "stairs_east",
+      "43": "stairs_east_alt"
+    },
+    "floor_roof": {
+      "44": "floor_roof"
+    },
+    "partition_doors": {
+      "45": "Va",
+      "46": "Vb",
+      "47": "Ha",
+      "48": "Hb"
+    },
+    "outer_multi": {
+      "49": "NES",
+      "50": "NEW",
+      "51": "NSW",
+      "52": "ESW",
+      "53": "NESW",
+      "54": "NS",
+      "55": "EW"
+    }
+  },
+  "materials_prompt": "wall=Collapsed overgrown ruin walls of weathered pale stone blocks with crumbled tops, thick roots through the joints, moss and ferns in crevices, hanging ivy. Top-down 2.5D: top surfaces clearly lighter than the TALL VERTICAL FRONT FACES, which read as deep shaded stone volume casting strong contact shadows onto the floor. Consistent upper-left lighting, AO at wall-floor junctions, chunky readable pixel shapes, cohesive mossy greens over cool grey stone with earthy roots, commercial game quality. floor=Ruins floor of broken flagstones half claimed by grass and moss, patches of soil, small shallow puddles and light leaf litter. Relatively clean and readable walkable center with detail concentrated at edges. Modern handcrafted pixel art, consistent pixel density, restrained texture noise, cohesive mossy greens over cool grey stone.",
+  "painted_indices": [
+    0,
+    1,
+    4,
+    8,
+    14,
+    17,
+    31,
+    32,
+    33,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+  ],
+  "repair": {
+    "status": "applied",
+    "tool": "pixelart_workbench edit --changes map_colors (free, 0 generations) — pixels claros del borde inferior reconstruidos con la piedra adyacente",
+    "applied_on": "2026-10-03",
+    "repaired_pieces": [
+      4,
+      5,
+      8,
+      13,
+      14,
+      18,
+      22,
+      23,
+      28
+    ],
+    "pixels_changed": {
+      "4": 4,
+      "5": 6,
+      "8": 6,
+      "13": 6,
+      "14": 5,
+      "18": 5,
+      "22": 5,
+      "23": 5,
+      "28": 5
+    },
+    "kept_original": {
+      "resto": "sin franja clara en la banda inferior (y>=55)"
+    },
+    "generations_consumed": 0,
+    "note": "El diagnostico original decia '~20 piezas'; el inventario real por bytes arrojo 9 piezas con 4-6 px cada una en la banda inferior. Las piezas 40,41,42,44 tienen areas claras amplias pero son escaleras/techo, no pared, y son parte del diseno.",
+    "out_of_scope_not_touched": [
+      "marcas claras de 1-5 px en la region SUPERIOR de las piezas 14,16,18,20,22,23,24,25,26,27,28,29,30,31"
+    ]
+  },
+  "pending_blemishes": [
+    "marcas claras de 1-5 px en la region SUPERIOR de las piezas 14,16,18,20,22,23,24,25,26,27,28,29,30,31"
+  ],
+  "integrated_into_game": false
+}

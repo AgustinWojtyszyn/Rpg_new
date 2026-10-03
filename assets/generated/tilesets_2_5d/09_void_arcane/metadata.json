@@ -1,0 +1,163 @@
+{
+  "family": "09_void_arcane",
+  "pixellab_id": "4528a6b6-86de-4519-8f92-ebf99aaf4e5e",
+  "tool": "create_building_kit",
+  "params": {
+    "tile_type": "square_topdown",
+    "tile_size": 32,
+    "wall_tiles": 2,
+    "tile_view_angle": 72,
+    "wall_angle": 40,
+    "outline_mode": "outline",
+    "layout": "grid"
+  },
+  "piece_count": 58,
+  "piece_size_px": [
+    52,
+    87
+  ],
+  "indices": "0..57",
+  "naming": "prefix_<index>.png",
+  "selected_version": "v2",
+  "discarded_candidates": [
+    "73ec98b3-36e1-47a3-bd6f-8a974d3a24dd (v1, descartada tras comparacion)"
+  ],
+  "selection_note": "Version final elegida tras comparar v1 vs v2; v1 descartada y NO incluida.",
+  "placement_rules": {
+    "floor": {
+      "0": "floor"
+    },
+    "sides": {
+      "1": "N",
+      "2": "E",
+      "3": "S",
+      "4": "W"
+    },
+    "corners": {
+      "5": "NE",
+      "6": "SE",
+      "7": "SW",
+      "8": "NW"
+    },
+    "outer_corners": {
+      "9": "NE",
+      "10": "SE",
+      "11": "SW",
+      "12": "NW"
+    },
+    "partition": {
+      "13": "hub",
+      "14": "N",
+      "15": "E",
+      "16": "S",
+      "17": "W"
+    },
+    "partition_wall": {
+      "18": "N",
+      "19": "E",
+      "20": "S",
+      "21": "W"
+    },
+    "partition_multi": {
+      "22": "NE",
+      "23": "NW",
+      "24": "ES",
+      "25": "SW",
+      "26": "NES",
+      "27": "NSW",
+      "28": "NEW",
+      "29": "ESW",
+      "30": "NESW"
+    },
+    "pillar": {
+      "31": "pillar"
+    },
+    "doors": {
+      "32": "Na",
+      "33": "Nb",
+      "34": "Ea",
+      "35": "Eb",
+      "36": "Sa",
+      "37": "Sb",
+      "38": "Wa",
+      "39": "Wb"
+    },
+    "stairs": {
+      "40": "stairs",
+      "41": "stairs_alt",
+      "42": "stairs_east",
+      "43": "stairs_east_alt"
+    },
+    "floor_roof": {
+      "44": "floor_roof"
+    },
+    "partition_doors": {
+      "45": "Va",
+      "46": "Vb",
+      "47": "Ha",
+      "48": "Hb"
+    },
+    "outer_multi": {
+      "49": "NES",
+      "50": "NEW",
+      "51": "NSW",
+      "52": "ESW",
+      "53": "NESW",
+      "54": "NS",
+      "55": "EW"
+    }
+  },
+  "materials_prompt": "wall=Arcane void ruins walls of pale-edged obsidian stone with crisp bevelled top surfaces, glowing violet and cyan runic channels running across the faces, thin energy filaments and metal-arcane inlays. Top-down 2.5D: wall top surfaces plus tall vertical front faces with strong contact shadows. High value contrast between bright top and dark face, consistent upper-left lighting, AO at wall-floor junctions, chunky readable pixel shapes, vivid violet-cyan accents, commercial game quality. floor=Void floor of polished dark violet stone tiles with clearly visible glowing cyan and violet rune inlays, faint energy cracks and subtle star-like specks, mid-dark readable value instead of near-black. Relatively clean walkable center with detail at edges. Modern handcrafted pixel art, consistent pixel density, restrained texture noise, cohesive dark violet stone with vivid rune accents.",
+  "painted_indices": [
+    0,
+    1,
+    4,
+    8,
+    14,
+    17,
+    31,
+    32,
+    33,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+  ],
+  "repair": {
+    "status": "applied",
+    "tool": "pixelart_workbench edit --changes map_colors (free, 0 generations) — correccion MONOTONA de la rampa lavanda: mismo tono, V' = 90 + (V-90)*0.67, S' = clamp(S*2.4, 0.06, 0.55). Preserva geometria, mascara alfa, orden de sombreado y acentos cian.",
+    "applied_on": "2026-10-03",
+    "repaired_pieces": [
+      31,
+      40,
+      42
+    ],
+    "pixels_changed": {
+      "31": 666,
+      "40": 822,
+      "42": 747
+    },
+    "kept_original": {},
+    "generations_consumed": 0,
+    "stats_before_after": {
+      "31_pillar": "lum 165.2 -> 121.9 | sat 0.196 -> 0.429",
+      "40_stairs": "lum 139.8 -> 110.3 | sat 0.242 -> 0.370",
+      "42_stairs_east": "lum 131.8 -> 102.0 | sat 0.237 -> 0.389",
+      "referencia_kit_piezas_buenas": "lum ~64-67 | sat ~0.50-0.53"
+    },
+    "out_of_scope_not_touched": [
+      "pieza 24 (partition_multi): comparte la MISMA paleta lavanda (lum 172.5, sat 0.205) que 31/40/42 — NO reparada por estar fuera del alcance documentado; requiere decision"
+    ]
+  },
+  "pending_blemishes": [
+    "pieza 24 (partition_multi): comparte la MISMA paleta lavanda (lum 172.5, sat 0.205) que 31/40/42 — NO reparada por estar fuera del alcance documentado; requiere decision"
+  ],
+  "integrated_into_game": false
+}
