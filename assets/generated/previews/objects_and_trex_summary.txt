@@ -1,0 +1,34 @@
+Rpg_new — T-Rex + Props Generation Summary
+==========================================
+
+T-REX (miniboss correction)
+- 8 new variants generated at 176x176 via create_character_pro_flash (large head/jaw, strong neck, aggressive charge pose, scars/plates).
+- Best candidates:
+  - PRIMARY: trexmini_v1 (ca8d4868) — biggest head, open jaw, glowing eyes. Saved as miniboss_trex_v2.
+  - ALT: trexmini_v8 (1465281f) — red boss markings. Saved as miniboss_trex_alt.
+- Preview comparison: assets/generated/previews/hierarchy/trex_miniboss_v2.png, trex_miniboss_alt.png
+- All T-Rex minibosses live in assets/generated/bosses/minibosses/trex/
+
+OBJECTS / PROPS (generated with PixelLab OBJECT tools: create_map_object)
+All saved with player/enemy visual language (single color outline, medium shading, low top-down 3/4).
+
+Lighting  -> assets/generated/props/lighting/
+- torch_wall.png, standing_torch.png, dark_street_lamp.png, magic_lamp_cyan.png
+
+Containers -> assets/generated/props/containers/
+- barrel.png, broken_barrel.png, crate.png, broken_crate.png
+
+Chests -> assets/generated/props/chests/
+- common_chest.png (iron/wood), rare_chest.png (cyan accents), epic_chest.png (violet), legendary_chest.png (gold), corrupted_chest.png (magenta/cyan rift)
+
+Structures -> assets/generated/props/structures/
+- stone_column.png, broken_column.png, treasure_pedestal.png, event_pedestal.png, lever.png
+
+Rubble -> assets/generated/props/rubble/
+- skull_pile.png, stone_rubble.png
+
+NOTES
+- create_map_object is the correct tool used (not raw image generation).
+- Previous create_image_pixflux outputs are superseded/deprecated for this batch.
+- Enemies at 96px vs T-Rex at 176px now gives clear miniboss hierarchy (~1.8x).
+- Pending (from earlier expansion request): plants enemies/boss, zombies, SWAT units, UI, full weapons states, environments/rooms.
