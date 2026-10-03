@@ -8,17 +8,63 @@ extends CharacterBody2D
 
 var target: Node2D
 var _contact_cooldown := 0.0
+var _art_sprite: Sprite2D
+var _art_base_path := ""
 
 func _ready() -> void:
 	add_to_group("aim_targets")
 	if definition != null:
 		health.configure(definition.max_health)
 	health.died.connect(_on_died)
+	_setup_generated_art()
 	queue_redraw()
+
+func _process(_delta: float) -> void:
+	if not is_instance_valid(_art_sprite) or _art_base_path.is_empty():
+		return
+	var facing := velocity
+	if facing.length_squared() < 1.0 and is_instance_valid(target):
+		facing = target.global_position - global_position
+	GeneratedArt.update_direction(_art_sprite, _art_base_path, facing)
 
 func configure(new_definition: EnemyDefinition, new_target: Node2D) -> void:
 	definition = new_definition
 	target = new_target
+	_setup_generated_art()
+
+func _setup_generated_art() -> void:
+	if definition == null:
+		return
+	_art_base_path = _generated_art_path(definition.id)
+	if _art_base_path.is_empty():
+		return
+	if not is_instance_valid(_art_sprite):
+		_art_sprite = GeneratedArt.make_sprite(_art_base_path, _generated_art_scale(definition.id), 8)
+		add_child(_art_sprite)
+
+func _generated_art_path(enemy_id: StringName) -> String:
+	match enemy_id:
+		&"raptor_scout":
+			return "res://assets/generated/enemies/enemy_raptor_final"
+		&"root_vine":
+			return "res://assets/generated/enemies/enemy_root_vine_final"
+		&"orb_stalker":
+			return "res://assets/generated/enemies/enemy_orb_stalker_final"
+		&"bone_guard":
+			return "res://assets/generated/enemies/enemy_bone_guard_final"
+		&"iron_beetle":
+			return "res://assets/generated/enemies/enemy_beetle_final"
+		_:
+			return ""
+
+func _generated_art_scale(enemy_id: StringName) -> float:
+	match enemy_id:
+		&"root_vine":
+			return 0.86
+		&"iron_beetle":
+			return 0.82
+		_:
+			return 0.78
 
 func _physics_process(delta: float) -> void:
 	_tick_contact_cooldown(delta)

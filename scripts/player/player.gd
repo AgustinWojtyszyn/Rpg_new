@@ -15,6 +15,8 @@ signal build_changed
 @export_range(50.0, 1000.0, 10.0) var aim_assist_range: float = 460.0
 @export var projectile_scene: PackedScene
 
+const GENERATED_ART_BASE := "res://assets/generated/player/player_main_final"
+
 @onready var health: HealthComponent = $Health
 
 var last_aim_direction := Vector2.RIGHT
@@ -30,12 +32,33 @@ var _weapon_cooldown_left := 0.0
 var _burst_interval_left := 0.0
 var _burst_shots_left := 0
 var _defeated := false
+var _art_sprite: Sprite2D
 
 func _ready() -> void:
 	_base_max_health = health.max_health
 	health.died.connect(_on_died)
+	_setup_generated_art()
 	configure_build(run_build)
 	queue_redraw()
+
+func _process(_delta: float) -> void:
+	if not is_instance_valid(_art_sprite):
+		return
+	GeneratedArt.update_direction(_art_sprite, GENERATED_ART_BASE, last_aim_direction)
+	if _defeated:
+		_art_sprite.modulate = Color(0.46, 0.48, 0.54, 0.82)
+	elif _hurt_invulnerability_left > 0.0:
+		_art_sprite.modulate = Color(1.0, 0.62, 0.62, 1.0)
+	elif is_dashing():
+		_art_sprite.modulate = Color(0.64, 0.94, 1.0, 1.0)
+	else:
+		_art_sprite.modulate = Color.WHITE
+
+func _setup_generated_art() -> void:
+	if is_instance_valid(_art_sprite):
+		return
+	_art_sprite = GeneratedArt.make_sprite(GENERATED_ART_BASE, 0.82, 8)
+	add_child(_art_sprite)
 
 func configure_build(build: RunBuild) -> void:
 	if build == null:
