@@ -62,11 +62,6 @@ func _ready() -> void:
 		_restore_run(snapshot)
 
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("ui_cancel"):
-		_save_checkpoint()
-		get_tree().change_scene_to_file("res://scenes/ui/main_menu.tscn")
-		return
-
 	_update_boss_hud()
 	_update_player_health_hud()
 	_update_toast(delta)
@@ -89,10 +84,13 @@ func _process(delta: float) -> void:
 		return
 
 	var room: Dictionary = _layout["rooms"][_current_room_id]
-	status_label.text = "%s  ·  SALA %d/%d" % [
-		String(room["kind"]).to_upper(),
+	status_label.text = "Seed %d  ·  Sala %d/%d  ·  %s  ·  HP %d/%d" % [
+		run_seed,
 		_current_room_id + 1,
 		_layout["rooms"].size(),
+		String(room["kind"]).to_upper(),
+		roundi(player.health.current_health),
+		roundi(player.health.max_health),
 	]
 
 func _start_new_run() -> void:
