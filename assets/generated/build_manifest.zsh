@@ -29,6 +29,9 @@ DIRS=(
   "props/pickups:Pickups:create_map_object"
   "props/traps:Trampas:create_map_object"
   "props/story:Storytelling:create_map_object"
+  "props/dungeon:Props de mazmorra:create_map_object"
+  "props/lab:Props de laboratorio:create_map_object"
+  "props/rift:Props de rift:create_map_object"
   "weapons:Armas:create_map_object"
   "weapons/held:Armas en mano:create_map_object"
   "weapons/icons:Iconos de armas:create_image_pixflux"
@@ -49,7 +52,12 @@ DIRS=(
   "vfx/movement:VFX movimiento:create_image_pixflux"
   "vfx/bosses:VFX bosses:create_image_pixflux"
   "vfx/rewards:VFX recompensas:create_image_pixflux"
-  "animations:Animaciones:animated_character / animate_object"
+)
+
+ANIM_DIRS=(
+  "animations/player:Animaciones jugables"
+  "animations/enemies:Animaciones enemigos"
+  "animations/bosses:Animaciones bosses"
 )
 
 DIRPAT='_(north-west|north-east|south-west|south-east|north|south|east|west)\.png$'
@@ -87,6 +95,30 @@ emit_group() {
   done
 }
 
+emit_anim() {
+  local dir="$1" label="$2"
+  local abs="$ROOT/$dir"
+  [[ -d "$abs" ]] || return 0
+  local -a chars
+  chars=($(cd "$abs" 2>/dev/null && ls -d */ 2>/dev/null | tr -d '/' | sort))
+  (( ${#chars} == 0 )) && return 0
+  echo ""
+  echo "### $label"
+  echo ""
+  echo "Dir: \`assets/generated/$dir/\` · Herramienta: animate_character (template + v3)"
+  echo ""
+  echo "| asset | categoría | herramienta | anims | frames | direcciones | path | status |"
+  echo "|---|---|---|---|---|---|---|---|"
+  for c in "${chars[@]}"; do
+    local anims nf dirs
+    anims=$(ls -1 "$abs/$c" 2>/dev/null | tr '\n' ',' | sed 's/,$//')
+    nf=$(find "$abs/$c" -name 'frame_*.png' 2>/dev/null | wc -l | tr -d ' ')
+    dirs=$(find "$abs/$c" -mindepth 2 -maxdepth 2 -type d 2>/dev/null | xargs -r -n1 basename | sort -u | tr '\n' ',' | sed 's/,$//')
+    printf '| %s | %s | animate_character | %s | %s | %s | `assets/generated/%s/%s/` | complete |\n' \
+      "$c" "$label" "$anims" "$nf" "${dirs:-south}" "$dir" "$c"
+  done
+}
+
 {
   echo "# ASSET MANIFEST — Rpg_new"
   echo ""
@@ -97,6 +129,10 @@ emit_group() {
   for entry in "${DIRS[@]}"; do
     IFS=':' read -r d l t <<< "$entry"
     emit_group "$d" "$l" "$t"
+  done
+  for entry in "${ANIM_DIRS[@]}"; do
+    IFS=':' read -r d l <<< "$entry"
+    emit_anim "$d" "$l"
   done
 } > "$OUT"
 
